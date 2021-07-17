@@ -1,0 +1,22 @@
+* LP1's 2nd project
+- This project is a discord back-end clone written in cpp.
+
+** How to compile
+- Open your shell and run:
+#+begin_src shell
+mkdir build
+cd build
+cmake ..
+cmake --build .
+#+end_src
+
+** How to run
+- Open your shell and run:
+#+begin_src shell
+./concordo
+#+end_src
+
+- You can also run commands directly from a text file this way:
+#+begin_src shell
+./concordo < script_comandos.txt
+#+end_src

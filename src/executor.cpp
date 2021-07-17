@@ -73,98 +73,95 @@ string Executor::processarLinha(string linha) {
   }
 
 
-	int id;
-	if(buf >> id){
-		
-		if (nomeComando == "disconnect") {
-			return sistema->disconnect(id);
-		}
+  int id;
+  if(buf >> id){
 
-		else if (nomeComando == "create-server") {
-			string nome;
-			buf >> nome;
-			return sistema->create_server(id, nome);
-		}
+    if (nomeComando == "disconnect") {
+      return sistema->disconnect(id);
+    }
 
-		else if (nomeComando == "set-server-desc") {
-			string nome, descricao;
-			buf >> nome;
-			descricao = restoDe(buf);
-			return sistema->set_server_desc(id, nome, descricao);
-		}
+    else if (nomeComando == "create-server") {
+      string nome;
+      buf >> nome;
+      return sistema->create_server(id, nome);
+    }
 
-		else if (nomeComando == "set-server-invite-code") {
-			string nome, codigo;
-			buf >> nome;
-			buf >> codigo;
-			return sistema->set_server_invite_code(id, nome, codigo);
-		}
+    else if (nomeComando == "set-server-desc") {
+      string nome, descricao;
+      buf >> nome;
+      descricao = restoDe(buf);
+      return sistema->set_server_desc(id, nome, descricao);
+    }
 
-		else if (nomeComando == "list-servers") {
-			return sistema->list_servers(id);
-		}
+    else if (nomeComando == "set-server-invite-code") {
+      string nome, codigo;
+      buf >> nome;
+      buf >> codigo;
+      return sistema->set_server_invite_code(id, nome, codigo);
+    }
 
-		else if (nomeComando == "remove-server") {
-			string nome;
-			buf >> nome;
-			return sistema->remove_server(id, nome);
-		}
+    else if (nomeComando == "list-servers") {
+      return sistema->list_servers(id);
+    }
 
-		else if (nomeComando == "enter-server") {
-			string nome, codigo;
-			buf >> nome;
-			buf >> codigo;
-			return sistema->enter_server(id, nome, codigo);
-		}
+    else if (nomeComando == "remove-server") {
+      string nome;
+      buf >> nome;
+      return sistema->remove_server(id, nome);
+    }
 
-		else if (nomeComando == "leave-server") {
-			string nome;
-			buf >> nome;
-			return sistema->leave_server(id, nome);
-		}
+    else if (nomeComando == "enter-server") {
+      string nome, codigo;
+      buf >> nome;
+      buf >> codigo;
+      return sistema->enter_server(id, nome, codigo);
+    }
 
-		else if (nomeComando == "list-participants") {
-			return sistema->list_participants(id);
-		}
+    else if (nomeComando == "leave-server") {
+      string nome;
+      buf >> nome;
+      return sistema->leave_server(id, nome);
+    }
 
-		else if (nomeComando == "list-channels") {
-			return sistema->list_channels(id);
-		}
+    else if (nomeComando == "list-participants") {
+      return sistema->list_participants(id);
+    }
 
-		else if (nomeComando == "create-channel") {
-			string nome;
-			buf >> nome;			
-			return sistema->create_channel(id, nome);
-		}
+    else if (nomeComando == "list-channels") {
+      return sistema->list_channels(id);
+    }
 
-		else if (nomeComando == "enter-channel") {
-			string nome;
-			buf >> nome;			
-			return sistema->enter_channel(id, nome);
-		}
+    else if (nomeComando == "create-channel") {
+      string nome;
+      buf >> nome;
+      return sistema->create_channel(id, nome);
+    }
 
-		else if (nomeComando == "leave-channel") {
-			return sistema->leave_channel(id);
-		}
+    else if (nomeComando == "enter-channel") {
+      string nome;
+      buf >> nome;
+      return sistema->enter_channel(id, nome);
+    }
 
-		else if (nomeComando == "send-message") {
-			string mensagem;
-			mensagem = restoDe(buf);
-			return sistema->send_message(id, mensagem);
-		}
+    else if (nomeComando == "leave-channel") {
+      return sistema->leave_channel(id);
+    }
 
-		else if (nomeComando == "list-messages") {
-			return sistema->list_messages(id);
-		}
-		else {
-			return "Comando não reconhecido [" + nomeComando + "]";
-		}
-	}	
+    else if (nomeComando == "send-message") {
+      string mensagem;
+      mensagem = restoDe(buf);
+      return sistema->send_message(id, mensagem);
+    }
+
+    else if (nomeComando == "list-messages") {
+      return sistema->list_messages(id);
+    }
+    else {
+      return "Comando não reconhecido [" + nomeComando + "]";
+    }
+  }
 
   else {
     return "Comando precisa ser precedido de um id [" + nomeComando + "]";
   }
 }
-
-
-
