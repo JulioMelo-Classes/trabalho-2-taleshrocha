@@ -1,3 +1,0 @@
-/home/tales/Documents/BTI/2021.1/LP1/trabalho-2-taleshrocha/build/CMakeFiles/rebuild_cache.dir
-/home/tales/Documents/BTI/2021.1/LP1/trabalho-2-taleshrocha/build/CMakeFiles/edit_cache.dir
-/home/tales/Documents/BTI/2021.1/LP1/trabalho-2-taleshrocha/build/CMakeFiles/concordo.dir
