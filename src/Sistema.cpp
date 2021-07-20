@@ -30,11 +30,27 @@ string Sistema::create_user (const string email, const string senha, const strin
 }
 
 string Sistema::login(const string email, const string senha) {
-  return "login NÃO IMPLEMENTADO";
+  for(Usuario u : usuarios)
+    if(email == u.Get_Email() and senha == u.Get_Keyword()){ //<! Checks if the user email and keyword exists
+      usuariosLogados.insert(make_pair(u.Get_Id(), make_pair("--", "--")));
+      return "login: logado como " + email;
+      }
+
+  return "login: senha ou usuário inválidos"; //<! In case the user doesn't exists
 }
 
 string Sistema::disconnect(int id) {
-  return "disconnect NÃO IMPLEMENTADO";
+  for(const auto& [key, value] : usuariosLogados){
+    cout << key << " " << value.first << " " << value.second << endl;
+    //cout << 1 << endl;
+  }
+
+  if(usuariosLogados.contains(id)){
+    auto el = usuariosLogados.find(id);
+    usuariosLogados.erase(el);
+    return "disconnect: usuário desconectado com sucesso.";
+  }
+  return "disconnect: usuário não conectado!";
 }
 
 string Sistema::create_server(int id, const string nome) {

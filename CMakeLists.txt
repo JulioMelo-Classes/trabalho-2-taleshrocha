@@ -9,5 +9,5 @@ add_executable(
     ${SOURCE_FILES})
 
 #add_definitions(-Wall -g -fsanitize=address -lm) #fsnitize have probles with the code base
-add_definitions(-Wall -g -lm)
+add_definitions(-Wall -g -std=c++20 -lm)
 include_directories(include)
