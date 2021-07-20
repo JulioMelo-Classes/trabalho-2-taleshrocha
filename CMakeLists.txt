@@ -8,6 +8,6 @@ add_executable(
     concordo
     ${SOURCE_FILES})
 
-#add_definitions(-Wall -g -fsanitize=address -lm)
+#add_definitions(-Wall -g -fsanitize=address -lm) #fsnitize have probles with the code base
 add_definitions(-Wall -g -lm)
 include_directories(include)

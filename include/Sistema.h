@@ -5,9 +5,10 @@
 #include <iostream>
 #include <map>
 
-#include "usuario.h"
-#include "servidor.h"
-#include "canaltexto.h"
+#include "Usuario.h"
+#include "Servidor.h"
+#include "Canaltexto.h"
+#include "Usuario.h"
 
 
 // Sistema deve concentrar todas as operações do Concordo

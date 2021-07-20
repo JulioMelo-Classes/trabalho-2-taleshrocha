@@ -1,4 +1,4 @@
-#include "sistema.h"
+#include "Sistema.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
@@ -11,7 +11,22 @@ string Sistema::quit() {
 }
 
 string Sistema::create_user (const string email, const string senha, const string nome) {
-  return "create_user NÃO IMPLEMENTADO";
+  Usuario user(email, senha, nome);
+  string notOk = user.Is_User_Ok();
+  if(notOk != "All ok") return notOk;
+
+  for(Usuario u : usuarios){ //<! Checks if the user name or email already exists
+    if(user.Get_Name() == u.Get_Name()) return "create_user: nome de usuário já existente.";
+    else if(user.Get_Email() == u.Get_Email()) return "create_user: email já usado.";
+  }
+
+  user.Set_Id();
+  //cout << user.Get_Id() << endl;
+  //cout << user.Get_Name() << endl;
+  //cout << user.Get_Email() << endl;
+  //cout << user.Get_Keyword() << endl;
+  usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists
+  return "create_user: usuário criado com sucesso.";
 }
 
 string Sistema::login(const string email, const string senha) {
