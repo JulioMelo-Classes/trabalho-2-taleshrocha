@@ -13,8 +13,6 @@ private:
 public:
 	Usuario(std::string email, std::string keyword, std::string name);
 
-	std::string Is_User_Ok();
-
 	void Set_Id();
 
 	void Set_Name(std::string name);

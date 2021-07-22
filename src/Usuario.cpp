@@ -10,13 +10,6 @@ Usuario::Usuario(string email, string keyword, string name){
   Keyword = keyword;
 }
 
-string Usuario::Is_User_Ok(){
-  if(Name == "") return "create_user: name is empty";
-  else if(Email == "") return "create_user: email is empty";
-  else if(Keyword == "") return "create_user: keyword is empty";
-  else return "All ok";
-}
-
 void Usuario::Set_Id(){
   Id = currentId++;
 }

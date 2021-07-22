@@ -2,29 +2,66 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <fstream>
+#include <string>
+#include <ctime>
+#include <vector>
+#include <cctype>
 
 using namespace std;
 
 /* COMANDOS */
 string Sistema::quit() {
-  return "Saindo...";
+  int lineCount = 0;
+  int randomQuote_int = 0;
+  string line = "";
+  string quitMenssage = "Sair? [Y]es / [N]o";
+  char quit = 'Y';
+  vector<std::string> randomQuote_vect;
+  ifstream quoteFile ("../data/quotes.txt");
+  srand(time(NULL));
+
+  if(quoteFile.is_open()){
+    while(!quoteFile.eof()){
+      getline(quoteFile, line);
+      if(line != " "){
+          randomQuote_vect.push_back(line);
+          lineCount++;
+      }
+    }
+    randomQuote_int = rand() % (lineCount - 1);
+    cout << randomQuote_vect[randomQuote_int] << " " << quitMenssage << endl;
+    quoteFile.close();
+  }
+  else{
+    cout << "Error. Unable to open a funny quote :(." << endl;
+  }
+
+  cin >> quit;
+
+  if(toupper(quit) == 'Y'){
+    return "Saindo...";
+  }
+
+  return "TODO"; //TODO
 }
 
 string Sistema::create_user (const string email, const string senha, const string nome) {
-  Usuario user(email, senha, nome);
-  string notOk = user.Is_User_Ok();
-  if(notOk != "All ok") return notOk;
-
-  for(Usuario u : usuarios){ //<! Checks if the user name or email already exists
-    if(user.Get_Name() == u.Get_Name()) return "create_user: nome de usuário já existente.";
-    else if(user.Get_Email() == u.Get_Email()) return "create_user: email já usado.";
+  if(nome.empty() or email.empty() or senha.empty()){
+    return "create_user: faltam informações para a criar o usuário.";
   }
 
+  for(Usuario user : usuarios){ //<! Checks if the user name or email already exists
+    if(nome == user.Get_Name()){
+      return "create_user: nome de usuário já existente.";
+    }
+    else if(email == user.Get_Email()){
+      return "create_user: email já usado.";
+    }
+  }
+
+  Usuario user(email, senha, nome);
   user.Set_Id();
-  //cout << user.Get_Id() << endl;
-  //cout << user.Get_Name() << endl;
-  //cout << user.Get_Email() << endl;
-  //cout << user.Get_Keyword() << endl;
   usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists
   return "create_user: usuário criado com sucesso.";
 }
@@ -55,8 +92,9 @@ string Sistema::create_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     Servidor server(id, nome);
     for(Servidor server : servidores) // Seek for a existing server name in the user domain
-      if(nome == server.getName() and id == server.getId())
+      if(nome == server.getName() and id == server.getId()){
         return "create_server: já existe um servidor com esse nome!";
+      }
 
     servidores.push_back(server);
     return "create-server: servidor criado com sucesso.";
@@ -86,12 +124,18 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
       if(nome == server.getName()){
         if(id == server.getId()){
           server.setInviteCode(codigo);
-          if(codigo.empty()) return "set_server_invite_code: codigo de convite do servidor [" + nome + "] removido.";
-          else return "set_server_invite_code: codigo de convite do servidor [" + nome + "] modificado.";
+          if(codigo.empty()){
+            return "set_server_invite_code: codigo de convite do servidor [" + nome + "] removido.";
+          }
+          else{
+            return "set_server_invite_code: codigo de convite do servidor [" + nome + "] modificado.";
+          }
         }
-        else return "set_server_invite_code: você não pode alterar o convite de um servidor que não foi criado por você!";
+        else
+          return "set_server_invite_code: você não pode alterar o convite de um servidor que não foi criado por você!";
       }
-      else return "set_server_invite_code: servidor [" + nome + "] não existe!";
+      else
+        return "set_server_invite_code: servidor [" + nome + "] não existe!";
     }
   }
   return "set_server_invite_code: usuário não existe ou não conectado!";
@@ -99,19 +143,41 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
 
 string Sistema::list_servers(int id) {
   stringstream ss;
+  ss << "list_servers: for user " << id << ":" << endl;
 
+  // Get all the servers belonging to the id and put them into "ss"
   for(auto &server : servidores)
     if(server.getId() == id) ss << server.getName() << endl;
 
   string s = ss.str();
 
-  if(s.empty()) return "list_servers: não foram encontrados servidores para esse usuário!";
-  s.pop_back(); // Removes the last endl
-  return "list_servers: \n" + s;
+  if(s.empty()){
+    return "list_servers: não foram encontrados servidores para esse usuário!";
+  }
+
+  s.pop_back(); // Removes the last endl from the string
+  return s;
 }
 
 string Sistema::remove_server(int id, const string nome) {
-  return "remove_server NÃO IMPLEMENTADO";
+  for(auto server = servidores.begin(); server != servidores.end(); server++){
+    if(server->getName() == nome){
+      if(server->getId() == id){
+        for(auto& [key, value] : usuariosLogados){
+          // See if the server that the user are seeing are equal to the server to be deleted
+          if(value.first == server->getName()){
+            value.first = "--"; // Removes the deleted serve from the user view
+          }
+        }
+
+        servidores.erase(server);
+        return "remove_server: servidor [" + server->getName() + "] removido.";
+      }
+      else return "remove_server: você não pode remover um servidor que não é seu!";
+    }
+  }
+
+  return "remove_server: nome de servidor não encontrado!";
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {

@@ -30,6 +30,19 @@ Executor::Executor(Sistema &sistema) {
 // Dessa forma ele faz o necessário para ler 1 comando por linha e
 // o processar corretamente, colocando no stream de saída o resultado de cada um.
 void Executor::iniciar(istream &inputStream, ostream &outputStream) {
+  //cout << "\033[1;34m";
+  cout << R"(
+           ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ██████╗ ██████╗
+          ██╔════╝██╔═══██╗████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔══██╗
+          ██║     ██║   ██║██╔██╗ ██║██║     ██║   ██║██████╔╝██║  ██║
+          ██║     ██║   ██║██║╚██╗██║██║     ██║   ██║██╔══██╗██║  ██║
+          ╚██████╗╚██████╔╝██║ ╚████║╚██████╗╚██████╔╝██║  ██║██████╔╝
+          ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝
+                        É tipo Discord, só que melhor!
+                                (Só que não)
+
+)";
+
   string linha, saida;
   this->sair = false;
   while (! this->sair)
