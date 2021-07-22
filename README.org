@@ -1,5 +1,6 @@
 * LP1's 2nd project
 
+#+begin_src shell
  ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ██████╗ ██████╗
 ██╔════╝██╔═══██╗████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔══██╗
 ██║     ██║   ██║██╔██╗ ██║██║     ██║   ██║██████╔╝██║  ██║
@@ -8,6 +9,7 @@
 ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝
             É tipo Discord, só que melhor!
                     (Só que não)
+#+end_src shell
 
 - This project is a discord back-end clone written in cpp.
 
