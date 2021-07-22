@@ -14,13 +14,17 @@ private:
 public:
 	Servidor(int usuarioDonoId, std::string nome);
 
+	void setDesc(std::string descricao);
+
+	void setInviteCode(std::string codigoConvite);
+
 	int getId();
 
 	std::string getName();
 
-	void setDesc(std::string descricao);
-
 	std::string getDesc();
+
+	std::string getInviteCode();
 };
 
 #endif

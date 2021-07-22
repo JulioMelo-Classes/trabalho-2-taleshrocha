@@ -59,11 +59,6 @@ string Sistema::create_server(int id, const string nome) {
         return "create_server: já existe um servidor com esse nome!";
 
     servidores.push_back(server);
-
-    // List the servers
-    for(auto &server : servidores)
-      cout << server.getId() << " " << server.getName() << endl;
-
     return "create-server: servidor criado com sucesso.";
   }
   else return "create-server: usuário não existente ou não conectado!";
@@ -81,20 +76,38 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
       }
       else return "set_server_desc: servidor [" + nome + "] não existe!";
     }
-
-    // List the servers
-    for(auto &server : servidores)
-      cout << server.getId() << " " << server.getName() << " " << server.getDesc() << endl;
   }
-  return "set_server_desc: usuário não existente ou não conectado!";
+  return "set_server_desc: usuário não existe ou não conectado!";
 }
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
-  return "set_server_invite_code NÃO IMPLEMENTADO";
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(Servidor server : servidores){ // Seek for a existing server name in the user domain
+      if(nome == server.getName()){
+        if(id == server.getId()){
+          server.setInviteCode(codigo);
+          if(codigo.empty()) return "set_server_invite_code: codigo de convite do servidor [" + nome + "] removido.";
+          else return "set_server_invite_code: codigo de convite do servidor [" + nome + "] modificado.";
+        }
+        else return "set_server_invite_code: você não pode alterar o convite de um servidor que não foi criado por você!";
+      }
+      else return "set_server_invite_code: servidor [" + nome + "] não existe!";
+    }
+  }
+  return "set_server_invite_code: usuário não existe ou não conectado!";
 }
 
 string Sistema::list_servers(int id) {
-  return "list_servers NÃO IMPLEMENTADO";
+  stringstream ss;
+
+  for(auto &server : servidores)
+    if(server.getId() == id) ss << server.getName() << endl;
+
+  string s = ss.str();
+
+  if(s.empty()) return "list_servers: não foram encontrados servidores para esse usuário!";
+  s.pop_back(); // Removes the last endl
+  return "list_servers: \n" + s;
 }
 
 string Sistema::remove_server(int id, const string nome) {
