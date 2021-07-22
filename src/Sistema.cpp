@@ -70,7 +70,23 @@ string Sistema::create_server(int id, const string nome) {
 }
 
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
-  return "set_server_desc NÃO IMPLEMENTADO";
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(Servidor server : servidores){ // Seek for a existing server name in the user domain
+      if(nome == server.getName()){
+        if(id == server.getId()){
+          server.setDesc(descricao);
+          return "set_server_desc: descrição do servidor [" + nome + "] modificada.";
+        }
+        else return "set_server_desc: você não pode alterar a descrição de um servidor que não foi criado por você!";
+      }
+      else return "set_server_desc: servidor [" + nome + "] não existe!";
+    }
+
+    // List the servers
+    for(auto &server : servidores)
+      cout << server.getId() << " " << server.getName() << " " << server.getDesc() << endl;
+  }
+  return "set_server_desc: usuário não existente ou não conectado!";
 }
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {

@@ -17,6 +17,10 @@ public:
 	int getId();
 
 	std::string getName();
+
+	void setDesc(std::string descricao);
+
+	std::string getDesc();
 };
 
 #endif
