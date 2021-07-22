@@ -34,16 +34,14 @@ string Sistema::login(const string email, const string senha) {
     if(email == u.Get_Email() and senha == u.Get_Keyword()){ //<! Checks if the user email and keyword exists
       usuariosLogados.insert(make_pair(u.Get_Id(), make_pair("--", "--")));
       return "login: logado como " + email;
-      }
+    }
 
   return "login: senha ou usuário inválidos"; //<! In case the user doesn't exists
 }
 
 string Sistema::disconnect(int id) {
-  for(const auto& [key, value] : usuariosLogados){
+  for(const auto& [key, value] : usuariosLogados)
     cout << key << " " << value.first << " " << value.second << endl;
-    //cout << 1 << endl;
-  }
 
   if(usuariosLogados.contains(id)){
     auto el = usuariosLogados.find(id);
@@ -54,7 +52,21 @@ string Sistema::disconnect(int id) {
 }
 
 string Sistema::create_server(int id, const string nome) {
-  return "create_server NÃO IMPLEMENTADO";
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    Servidor server(id, nome);
+    for(Servidor server : servidores) // Seek for a existing server name in the user domain
+      if(nome == server.getName() and id == server.getId())
+        return "create_server: já existe um servidor com esse nome!";
+
+    servidores.push_back(server);
+
+    // List the servers
+    for(auto &server : servidores)
+      cout << server.getId() << " " << server.getName() << endl;
+
+    return "create-server: servidor criado com sucesso.";
+  }
+  else return "create-server: usuário não existente ou não conectado!";
 }
 
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
