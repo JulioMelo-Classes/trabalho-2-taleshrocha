@@ -11,7 +11,7 @@
 using namespace std;
 
 /* COMANDOS */
-string Sistema::quit() {
+bool Sistema::quit() {
   int lineCount = 0;
   int randomQuote_int = 0;
   string line = "";
@@ -39,11 +39,14 @@ string Sistema::quit() {
 
   cin >> quit;
 
-  if(toupper(quit) == 'Y'){
-    return "Saindo...";
+  while(!(toupper(quit) == 'Y')){
+    if(toupper(quit) == 'N'){
+      return false;
+    }
+    cout << quitMenssage << endl;
+    cin >> quit;
   }
-
-  return "TODO"; //TODO
+  return true;
 }
 
 string Sistema::create_user (const string email, const string senha, const string nome) {

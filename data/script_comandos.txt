@@ -51,4 +51,5 @@ login isaacfranco@imd.ufrn.br senhalegal
 enter-server 0 servidor-sinistro
 list-participants 0
 quit
+y
 create-user naodeveprocessar@imd.ufrn.br naodevechegaraqui Não deve chegar aqui

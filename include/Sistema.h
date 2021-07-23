@@ -23,7 +23,7 @@ class Sistema {
 		/*! Encerra o funcionamento do Concordo, o programa termina ao executar este comando.
 				@return uma string com a mensagem "Saindo.."
 		*/
-		std::string quit();
+		bool quit();
 
 		/*! Cria um usuário e retorna uma string de erro/sucesso 
 				@param email o email do usuário informado no comando create-user

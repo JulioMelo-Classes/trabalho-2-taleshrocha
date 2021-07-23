@@ -62,12 +62,19 @@ string Executor::processarLinha(string linha) {
   buf >> nomeComando;
 
   if (nomeComando.empty()) {
+    //cout << nomeComando << endl;
     return "Comando Inválido <vazio>";
   }
 
-  if (nomeComando == "quit" ) {
-    this->sair = true;
-    return sistema->quit();
+  if (nomeComando == "quit") {
+    if(sistema->quit()){
+      this->sair = true;
+      return "Saindo...";
+    }
+    // To clean the buffer
+    string s;
+    getline(cin, s);
+    return "Comando cancelado!";
   }
 
   else if (nomeComando == "create-user") {
@@ -175,6 +182,7 @@ string Executor::processarLinha(string linha) {
   }
 
   else {
+    //cout << nomeComando << endl;
     return "Comando precisa ser precedido de um id [" + nomeComando + "]";
   }
 }
