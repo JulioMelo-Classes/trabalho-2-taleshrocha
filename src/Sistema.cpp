@@ -80,15 +80,22 @@ string Sistema::login(const string email, const string senha) {
 }
 
 string Sistema::disconnect(int id) {
-  for(const auto& [key, value] : usuariosLogados)
-    cout << key << " " << value.first << " " << value.second << endl;
+  //for(const auto& [key, value] : usuariosLogados)
+  //  cout << key << " " << value.first << " " << value.second << endl;
+
+  string userName;
+  for(Usuario user : usuarios){ //<! Gets the user name
+    if(user.Get_Id() == id){
+      userName = user.Get_Name();
+    }
+  }
 
   if(usuariosLogados.contains(id)){
     auto el = usuariosLogados.find(id);
     usuariosLogados.erase(el);
-    return "disconnect: usuário desconectado com sucesso.";
+    return "disconnect: usuário [" + userName + "] desconectado com sucesso.";
   }
-  return "disconnect: usuário não conectado!";
+  return "disconnect: usuário não conectado ou não existente!";
 }
 
 string Sistema::create_server(int id, const string nome) {

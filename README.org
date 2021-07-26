@@ -32,3 +32,11 @@ cmake --build .
 #+begin_src shell
 ./concordo < script_comandos.txt
 #+end_src
+
+** How to quit
+- Use the quit command and type "Y" or "N". Like this:
+#+begin_src shell
+quit
+You've got to ask yourself one question: "Do I feel lucky?" Well, do ya, punk? Sair? [Y]es / [N]o
+Y
+#+end_src
