@@ -11,6 +11,10 @@ void Servidor::setDesc(string descricao){ this->descricao = descricao;}
 
 void Servidor::setInviteCode(string codigoConvite){ this->codigoConvite = codigoConvite;}
 
+void Servidor::addParticipant(int id){
+  this->participantesIds.push_back(id);
+}
+
 int Servidor::getId(){ return usuarioDonoId;}
 
 string Servidor::getName(){ return nome;}

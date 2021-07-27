@@ -18,6 +18,8 @@ public:
 
 	void setInviteCode(std::string codigoConvite);
 
+	void addParticipant(int id);
+
 	int getId();
 
 	std::string getName();

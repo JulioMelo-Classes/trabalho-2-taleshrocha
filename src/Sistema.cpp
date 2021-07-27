@@ -130,7 +130,7 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(Servidor server : servidores){ // Seek for a existing server name in the user domain
+    for(Servidor &server : servidores){ // Seek for a existing server name in the user domain
       if(nome == server.getName()){
         if(id == server.getId()){
           server.setInviteCode(codigo);
@@ -144,8 +144,9 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
         else
           return "set_server_invite_code: você não pode alterar o convite de um servidor que não foi criado por você!";
       }
-      else
+      else{
         return "set_server_invite_code: servidor [" + nome + "] não existe!";
+      }
     }
   }
   return "set_server_invite_code: usuário não existe ou não conectado!";
@@ -156,8 +157,9 @@ string Sistema::list_servers(int id) {
   ss << "list_servers: for user " << id << ":" << endl;
 
   // Get all the servers belonging to the id and put them into "ss"
-  for(auto &server : servidores)
+  for(auto &server : servidores){
     if(server.getId() == id) ss << server.getName() << endl;
+  }
 
   string s = ss.str();
 
@@ -191,7 +193,24 @@ string Sistema::remove_server(int id, const string nome) {
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
-  return "enter_server NÃO IMPLEMENTADO";
+  for(Servidor server : servidores){
+    if(nome == server.getName()){
+      if(server.getInviteCode().empty() or codigo == server.getInviteCode()){
+        //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // BUG
+        server.addParticipant(id);
+        for(auto& [key, value] : usuariosLogados){
+          if(key == id){
+            value.first = nome;
+          }
+        }
+        return "enter_server: você está no servidor " + nome + ".";
+      }
+      else{
+        return "enter_server: código de convite nulo ou errado!";
+      }
+    }
+  }
+  return "enter_server: servidor não existe!";
 }
 
 string Sistema::leave_server(int id, const string nome) {
