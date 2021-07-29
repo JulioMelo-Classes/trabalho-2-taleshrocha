@@ -5,3 +5,4 @@ login taleshrochaz@gmail.com senha
 disconnect 0
 disconnect 1
 disconnect 2
+quit
