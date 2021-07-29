@@ -202,32 +202,35 @@ string Sistema::remove_server(int id, const string nome) {
   else{ // If the user is not logged in
     return "remove-server: usuário não existe ou não conectado!";
   }
-
-  return "remove_server: nome de servidor não encontrado!";
+return "remove_server: nome de servidor não encontrado!";
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
-  for(Servidor &server : servidores){ //BUG
-    if(nome == server.getName()){
-      if(server.getInviteCode().empty() or codigo == server.getInviteCode()){
-        //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // BUG
-        server.addParticipant(id);
-        for(auto& [key, value] : usuariosLogados){
-          //cout << key << " " << value.first << " " << value.second << endl; // BUG
-          if(key == id){
-            value.first = nome;
-            //cout << key << " " << value.first << " " << value.second << endl; // BUG
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(Servidor &server : servidores){ //BUG the &
+      if(nome == server.getName()){
+        if(server.getInviteCode().empty() or codigo == server.getInviteCode() or id == server.getId()){
+          //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
+          server.addParticipant(id);
+          for(auto& [key, value] : usuariosLogados){
+            //cout << key << " " << value.first << " " << value.second << endl; // DEBUG
+            if(key == id){
+              value.first = nome;
+            }
           }
+          return "enter_server: você está no servidor " + nome + ".";
         }
-        return "enter_server: você está no servidor " + nome + ".";
+        else{
+          return "enter_server: código de convite nulo ou errado!";
+        }
       }
       else{
-        return "enter_server: código de convite nulo ou errado!";
+        return "enter_server: servidor não existe!";
       }
     }
   }
-  return "enter_server: servidor não existe!";
-}
+    return "enter-server: usuário não existe ou não conectado!";
+  }
 
 string Sistema::leave_server(int id, const string nome) {
   for(Servidor &server : servidores){ // BUG
