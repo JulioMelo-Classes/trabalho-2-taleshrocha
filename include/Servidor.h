@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 
+/*
+CP1 classe servidor ok!
+*/
 class Servidor{
 private:
 	int usuarioDonoId;

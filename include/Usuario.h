@@ -2,6 +2,9 @@
 #define USUARIO_H
 #include <string>
 
+/*
+CP1 classe usuário ok!
+*/
 class Usuario{
 private:
 	int Id;

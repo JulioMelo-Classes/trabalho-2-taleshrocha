@@ -20,7 +20,9 @@ bool Sistema::quit() {
   vector<std::string> randomQuote_vect;
   ifstream quoteFile ("../data/quotes.txt");
   srand(time(NULL));
-
+  /*boa ideia =)
+    achei até que vc tinha feito persistencia em arquivos =p
+  */
   if(quoteFile.is_open()){
     while(!quoteFile.eof()){
       getline(quoteFile, line);
@@ -49,8 +51,11 @@ bool Sistema::quit() {
   return true;
 }
 
+/*
+A1.2 ok
+*/
 string Sistema::create_user (const string email, const string senha, const string nome) {
-  if(nome.empty() or email.empty() or senha.empty()){
+  if(nome.empty() or email.empty() or senha.empty()){ //um pouco de overthinking mas blz.
     return "create_user: faltam informações para a criar o usuário.";
   }
 
@@ -69,6 +74,9 @@ string Sistema::create_user (const string email, const string senha, const strin
   return "create_user: usuário criado com sucesso.";
 }
 
+/*
+A1.3 ok
+*/
 string Sistema::login(const string email, const string senha) {
   for(Usuario u : usuarios)
     if(email == u.Get_Email() and senha == u.Get_Keyword()){ //<! Checks if the user email and keyword exists
@@ -79,6 +87,9 @@ string Sistema::login(const string email, const string senha) {
   return "login: senha ou usuário inválidos"; //<! In case the user doesn't exists
 }
 
+/*
+A2.1 ok
+*/
 string Sistema::disconnect(int id) {
   //for(const auto& [key, value] : usuariosLogados)
   //  cout << key << " " << value.first << " " << value.second << endl;
@@ -98,6 +109,9 @@ string Sistema::disconnect(int id) {
   return "disconnect: usuário não conectado ou não existente!";
 }
 
+/*
+A2.2 ok
+*/
 string Sistema::create_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     Servidor server(id, nome);
@@ -112,6 +126,9 @@ string Sistema::create_server(int id, const string nome) {
   else return "create-server: usuário não existente ou não conectado!";
 }
 
+/*
+A2.3 ok
+*/
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(Servidor server : servidores){ // Seek for a existing server name in the user domain
@@ -128,6 +145,9 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
   return "set_server_desc: usuário não existe ou não conectado!";
 }
 
+/*
+A2.4 ok
+*/
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(Servidor server : servidores){ // Seek for a existing server name in the user domain
@@ -151,6 +171,9 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
   return "set_server_invite_code: usuário não existe ou não conectado!";
 }
 
+/*
+A2.5 ok
+*/
 string Sistema::list_servers(int id) {
   stringstream ss;
   ss << "list_servers: for user " << id << ":" << endl;
@@ -169,6 +192,9 @@ string Sistema::list_servers(int id) {
   return s;
 }
 
+/*
+A2.6 ok
+*/
 string Sistema::remove_server(int id, const string nome) {
   for(auto server = servidores.begin(); server != servidores.end(); server++){
     if(server->getName() == nome){
