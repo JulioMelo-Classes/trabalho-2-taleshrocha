@@ -10,34 +10,34 @@ Usuario::Usuario(string email, string keyword, string name){
   Keyword = keyword;
 }
 
-void Usuario::Set_Id(){
+void Usuario::setId(){
   Id = currentId++;
 }
 
-void Usuario::Set_Name(string name){ // TODO: can't have numbers
+void Usuario::setName(string name){ // TODO: can't have numbers
   Name = name;
 }
 
-void Usuario::Set_Email(string email){ //TODO: validation
+void Usuario::setEmail(string email){ //TODO: validation
   Email = email;
 }
 
-void Usuario::Set_keyword(string keyword){ // TODO: keyword size most be bigger than 8 char
+void Usuario::setKeyword(string keyword){ // TODO: keyword size most be bigger than 8 char
   Keyword = keyword;
 }
 
-int Usuario::Get_Id(){
+int Usuario::getId(){
   return Id;
 }
 
-string Usuario::Get_Name(){
+string Usuario::getName(){
   return Name;
 }
 
-string Usuario::Get_Email(){
+string Usuario::getEmail(){
   return Email;
 }
 
-string Usuario::Get_Keyword(){
+string Usuario::getKeyword(){
   return Keyword;
 }

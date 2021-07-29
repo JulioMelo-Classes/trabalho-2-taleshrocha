@@ -46,12 +46,12 @@ void Executor::iniciar(istream &inputStream, ostream &outputStream) {
   string linha, saida;
   this->sair = false;
   while (! this->sair)
-  {
-    if (std::getline(inputStream, linha)) {
-      saida = processarLinha(linha);
-      outputStream << saida << endl;
+    {
+      if (std::getline(inputStream, linha)) {
+        saida = processarLinha(linha);
+        outputStream << saida << endl;
+      }
     }
-  }
 }
 
 // Método responsável por processar cada linha, capturando o nome do comando

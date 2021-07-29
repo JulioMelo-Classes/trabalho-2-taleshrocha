@@ -1,0 +1,7 @@
+create-user email senha tales
+login tales senha
+login email senha
+create-server 0 batata
+create-server 1 batata
+list-servers 0
+enter-server 0 batata

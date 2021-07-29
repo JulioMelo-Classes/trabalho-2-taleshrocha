@@ -13,21 +13,21 @@ private:
 public:
 	Usuario(std::string email, std::string keyword, std::string name);
 
-	void Set_Id();
+	void setId();
 
-	void Set_Name(std::string name);
+	void setName(std::string name);
 
-	void Set_Email(std::string email);
+	void setEmail(std::string email);
 
-	void Set_keyword(std::string keyword);
+	void setKeyword(std::string keyword);
 
-	int Get_Id();
+	int getId();
 
-	std::string Get_Name();
+	std::string getName();
 
-	std::string Get_Email();
+	std::string getEmail();
 
-	std::string Get_Keyword();
+	std::string getKeyword();
 };
 
 

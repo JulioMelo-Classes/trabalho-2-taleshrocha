@@ -25,8 +25,8 @@ bool Sistema::quit() {
     while(!quoteFile.eof()){
       getline(quoteFile, line);
       if(line != " "){
-          randomQuote_vect.push_back(line);
-          lineCount++;
+        randomQuote_vect.push_back(line);
+        lineCount++;
       }
     }
     randomQuote_int = rand() % (lineCount - 1);
@@ -55,27 +55,32 @@ string Sistema::create_user (const string email, const string senha, const strin
   }
 
   for(Usuario user : usuarios){ //<! Checks if the user name or email already exists
-    if(nome == user.Get_Name()){
+    if(nome == user.getName()){
       return "create_user: nome de usuário já existente.";
     }
-    else if(email == user.Get_Email()){
+    else if(email == user.getEmail()){
       return "create_user: email já usado.";
     }
   }
 
   Usuario user(email, senha, nome);
-  user.Set_Id();
+  user.setId();
   usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists
   return "create_user: usuário criado com sucesso.";
 }
 
-string Sistema::login(const string email, const string senha) {
-  for(Usuario u : usuarios)
-    if(email == u.Get_Email() and senha == u.Get_Keyword()){ //<! Checks if the user email and keyword exists
-      usuariosLogados.insert(make_pair(u.Get_Id(), make_pair("--", "--")));
-      return "login: logado como " + email;
+string Sistema::login(const string email, const string senha){
+  for(Usuario u : usuarios){
+    if(email == u.getEmail() and senha == u.getKeyword()){ //<! Checks if the user email and keyword exists
+      if(!usuariosLogados.contains(u.getId())){ //<! See if the user is not already logged
+        usuariosLogados.insert(make_pair(u.getId(), make_pair("--", "--")));
+        return "login: logado como " + email;
+      }
+      else{
+        return "login: usuário com email: " + email + ", já logado!";
+      }
     }
-
+  }
   return "login: senha ou usuário inválidos"; //<! In case the user doesn't exists
 }
 
@@ -85,8 +90,8 @@ string Sistema::disconnect(int id) {
 
   string userName;
   for(Usuario user : usuarios){ //<! Gets the user name
-    if(user.Get_Id() == id){
-      userName = user.Get_Name();
+    if(user.getId() == id){
+      userName = user.getName();
     }
   }
 
@@ -109,7 +114,9 @@ string Sistema::create_server(int id, const string nome) {
     servidores.push_back(server);
     return "create-server: servidor criado com sucesso.";
   }
-  else return "create-server: usuário não existente ou não conectado!";
+  else{
+    return "create-server: usuário não existente ou não conectado!";
+  }
 }
 
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
@@ -178,7 +185,9 @@ string Sistema::remove_server(int id, const string nome) {
         for(auto& [key, value] : usuariosLogados){
           // See if the server that the user are seeing are equal to the server to be deleted
           if(value.first == server->getName()){
-            value.first = "--"; // Removes the deleted serve from the user view
+            // Removes the deleted server and the deleted server channel the user are seeing from the user view
+            value.first = "--";
+            value.second = "--";
           }
         }
 
@@ -193,14 +202,16 @@ string Sistema::remove_server(int id, const string nome) {
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
-  for(Servidor server : servidores){
+  for(Servidor &server : servidores){ //BUG
     if(nome == server.getName()){
       if(server.getInviteCode().empty() or codigo == server.getInviteCode()){
         //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // BUG
         server.addParticipant(id);
         for(auto& [key, value] : usuariosLogados){
+          //cout << key << " " << value.first << " " << value.second << endl; // BUG
           if(key == id){
             value.first = nome;
+            //cout << key << " " << value.first << " " << value.second << endl; // BUG
           }
         }
         return "enter_server: você está no servidor " + nome + ".";
@@ -214,7 +225,26 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
 }
 
 string Sistema::leave_server(int id, const string nome) {
-  return "leave_server NÃO IMPLEMENTADO";
+  for(Servidor &server : servidores){ // BUG
+    if(nome == server.getName()){
+      if(server.existParticipant(id)){
+        server.removeParticipant(id);
+        for(auto& [key, value] : usuariosLogados){
+          cout << key << " " << value.first << " " << value.second << endl; // BUG
+          if(key == id){
+            value.first = "--";
+            value.second = "--";
+            cout << key << " " << value.first << " " << value.second << endl; // BUG
+          }
+        }
+        return "leave-server: saindo do servidor" + nome + ".";
+      }
+      else{
+        return "leave-server: você já saiu desse servidor!";
+      }
+    }
+  }
+  return "leave-server: servidor não existe!";
 }
 
 string Sistema::list_participants(int id) {

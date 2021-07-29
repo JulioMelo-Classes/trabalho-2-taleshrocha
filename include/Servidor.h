@@ -20,6 +20,8 @@ public:
 
 	void addParticipant(int id);
 
+	void removeParticipant(int id);
+
 	int getId();
 
 	std::string getName();
@@ -27,6 +29,8 @@ public:
 	std::string getDesc();
 
 	std::string getInviteCode();
+
+	bool existParticipant(int id);
 };
 
 #endif
