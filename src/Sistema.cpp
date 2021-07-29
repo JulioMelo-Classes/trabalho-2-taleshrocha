@@ -193,7 +193,8 @@ string Sistema::list_servers(int id) {
 }
 
 /*
-A2.6 ok
+A2.6 70%
+removi 30% devido a falta de checagem do usuário logado
 */
 string Sistema::remove_server(int id, const string nome) {
   for(auto server = servidores.begin(); server != servidores.end(); server++){
