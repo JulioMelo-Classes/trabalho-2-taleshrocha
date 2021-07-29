@@ -85,17 +85,17 @@ string Sistema::login(const string email, const string senha){
 }
 
 string Sistema::disconnect(int id) {
-  //for(const auto& [key, value] : usuariosLogados)
-  //  cout << key << " " << value.first << " " << value.second << endl;
 
+  // Just to get the user name:
   string userName;
-  for(Usuario user : usuarios){ //<! Gets the user name
+  for(Usuario user : usuarios){
     if(user.getId() == id){
       userName = user.getName();
     }
   }
 
-  if(usuariosLogados.contains(id)){
+  // To disconnect the user:
+  if(usuariosLogados.contains(id)){ // See if the user is logged in
     auto el = usuariosLogados.find(id);
     usuariosLogados.erase(el);
     return "disconnect: usuário [" + userName + "] desconectado com sucesso.";
@@ -179,23 +179,28 @@ string Sistema::list_servers(int id) {
 }
 
 string Sistema::remove_server(int id, const string nome) {
-  for(auto server = servidores.begin(); server != servidores.end(); server++){
-    if(server->getName() == nome){
-      if(server->getId() == id){
-        for(auto& [key, value] : usuariosLogados){
-          // See if the server that the user are seeing are equal to the server to be deleted
-          if(value.first == server->getName()){
-            // Removes the deleted server and the deleted server channel the user are seeing from the user view
-            value.first = "--";
-            value.second = "--";
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(auto server = servidores.begin(); server != servidores.end(); server++){
+      if(server->getName() == nome){
+        if(server->getId() == id){
+          for(auto& [key, value] : usuariosLogados){
+            // See if the server that the user are seeing are equal to the server to be deleted
+            if(value.first == server->getName()){
+              value.first = "--";  // Removes the deleted server from the user view
+              value.second = "--"; // Removes the deleted server's channel from the user view
+            }
           }
+          servidores.erase(server);
+          return "remove_server: servidor [" + server->getName() + "] removido.";
         }
-
-        servidores.erase(server);
-        return "remove_server: servidor [" + server->getName() + "] removido.";
+        else{
+          return "remove_server: você não pode remover um servidor que não é seu!";
+        }
       }
-      else return "remove_server: você não pode remover um servidor que não é seu!";
     }
+  }
+  else{ // If the user is not logged in
+    return "remove-server: usuário não existe ou não conectado!";
   }
 
   return "remove_server: nome de servidor não encontrado!";
