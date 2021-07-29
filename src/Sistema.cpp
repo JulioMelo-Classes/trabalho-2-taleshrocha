@@ -197,17 +197,17 @@ string Sistema::remove_server(int id, const string nome) {
           return "remove_server: você não pode remover um servidor que não é seu!";
         }
       }
+      else{
+        return "remove_server: nome de servidor não encontrado!";
+      }
     }
   }
-  else{ // If the user is not logged in
-    return "remove-server: usuário não existe ou não conectado!";
-  }
-return "remove_server: nome de servidor não encontrado!";
+  return "remove-server: usuário não existe ou não conectado!";
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(Servidor &server : servidores){ //BUG the &
+    for(Servidor &server : servidores){
       if(nome == server.getName()){
         if(server.getInviteCode().empty() or codigo == server.getInviteCode() or id == server.getId()){
           //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
@@ -229,30 +229,35 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
       }
     }
   }
-    return "enter-server: usuário não existe ou não conectado!";
-  }
+  return "enter-server: usuário não existe ou não conectado!";
+}
 
 string Sistema::leave_server(int id, const string nome) {
-  for(Servidor &server : servidores){ // BUG
-    if(nome == server.getName()){
-      if(server.existParticipant(id)){
-        server.removeParticipant(id);
-        for(auto& [key, value] : usuariosLogados){
-          cout << key << " " << value.first << " " << value.second << endl; // BUG
-          if(key == id){
-            value.first = "--";
-            value.second = "--";
-            cout << key << " " << value.first << " " << value.second << endl; // BUG
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(Servidor &server : servidores){
+      if(nome == server.getName()){
+        if(server.existParticipant(id)){
+          server.removeParticipant(id);
+          for(auto& [key, value] : usuariosLogados){
+            //cout << key << " " << value.first << " " << value.second << endl; // BUG
+            if(key == id){
+              value.first = "--";
+              value.second = "--";
+              //cout << key << " " << value.first << " " << value.second << endl; // BUG
+            }
           }
+          return "leave-server: saindo do servidor" + nome + ".";
         }
-        return "leave-server: saindo do servidor" + nome + ".";
+        else{
+          return "leave-server: você já saiu desse servidor!";
+        }
       }
       else{
-        return "leave-server: você já saiu desse servidor!";
+        return "leave-server: servidor não existe!";
       }
     }
   }
-  return "leave-server: servidor não existe!";
+  return "enter-server: usuário não existe ou não conectado!";
 }
 
 string Sistema::list_participants(int id) {

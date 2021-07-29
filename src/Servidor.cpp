@@ -8,41 +8,55 @@ Servidor::Servidor(int usuarioDonoId, std::string nome){
   this->nome = nome;
 }
 
-void Servidor::setDesc(string descricao){ this->descricao = descricao;}
+void Servidor::setDesc(string descricao){
+  this->descricao = descricao;
+}
 
-void Servidor::setInviteCode(string codigoConvite){ this->codigoConvite = codigoConvite;}
+void Servidor::setInviteCode(string codigoConvite){
+  this->codigoConvite = codigoConvite;
+}
 
 void Servidor::addParticipant(int id){
   this->participantesIds.push_back(id);
 }
 
 void Servidor::removeParticipant(int id){
-  cout << "Hello" << endl;
   for(auto id_ = participantesIds.begin(); id_ != participantesIds.end(); id_++){
+    //cout << "removeParticipant0: " << id << " " << *id_ << endl;
+    //cout << "removeParticipant0: " << participantesIds.size() << endl;
     if(*id_ == id){
-      cout << id << " " << *id_ << endl;
-      //cout << "batata" << endl;
+      //cout << "removeParticipant1: " << id << " " << *id_ << endl;
       this->participantesIds.erase(id_);
+      id_--; // For some reason
+      //cout << "removeParticipant2: " << id << " " << *id_ << endl;
     }
   }
 }
 
-int Servidor::getId(){ return usuarioDonoId;}
+int Servidor::getId(){
+  return usuarioDonoId;
+}
 
-string Servidor::getName(){ return nome;}
+string Servidor::getName(){
+  return nome;
+}
 
-string Servidor::getDesc(){ return descricao;}
+string Servidor::getDesc(){
+  return descricao;
+}
 
-string Servidor::getInviteCode(){ return codigoConvite;}
+string Servidor::getInviteCode(){
+  return codigoConvite;
+}
 
 bool Servidor::existParticipant(int id){
   for(int id_ : participantesIds){
     //cout << id << id_ << endl;
     if(id_ == id){
-      cout << "true" << endl;
+      //cout << "true" << endl;
       return true;
     }
   }
-  cout << "false" << endl;
+  //cout << "false" << endl;
   return false;
 }
