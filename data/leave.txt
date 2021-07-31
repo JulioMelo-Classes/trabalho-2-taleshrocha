@@ -7,5 +7,7 @@ list-servers 0
 enter-server 0 batata
 leave-server 0 batata
 leave-server 0 batata
+enter-server 0 batata
+leave-server 0 batata
 quit
 y

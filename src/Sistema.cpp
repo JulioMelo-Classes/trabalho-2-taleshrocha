@@ -208,6 +208,7 @@ string Sistema::remove_server(int id, const string nome) {
 string Sistema::enter_server(int id, const string nome, const string codigo) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(Servidor &server : servidores){
+      //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
       if(nome == server.getName()){
         if(server.getInviteCode().empty() or codigo == server.getInviteCode() or id == server.getId()){
           //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
@@ -218,16 +219,14 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
               value.first = nome;
             }
           }
-          return "enter_server: você está no servidor " + nome + ".";
+          return "enter_server: você está no servidor [" + nome + "].";
         }
         else{
           return "enter_server: código de convite nulo ou errado!";
         }
       }
-      else{
-        return "enter_server: servidor não existe!";
-      }
     }
+    return "enter_server: servidor não existe!";
   }
   return "enter-server: usuário não existe ou não conectado!";
 }
@@ -246,22 +245,56 @@ string Sistema::leave_server(int id, const string nome) {
               //cout << key << " " << value.first << " " << value.second << endl; // BUG
             }
           }
-          return "leave-server: saindo do servidor" + nome + ".";
+          return "leave-server: saindo do servidor [" + nome + "].";
         }
         else{
-          return "leave-server: você já saiu desse servidor!";
+          return "leave-server: você já não estava no servidor [" + nome + "]!";
         }
       }
-      else{
-        return "leave-server: servidor não existe!";
-      }
     }
+      return "leave-server: servidor [" + nome + "] não existe!";
   }
   return "enter-server: usuário não existe ou não conectado!";
 }
 
-string Sistema::list_participants(int id) {
-  return "list_participants NÃO IMPLEMENTADO";
+string Sistema::list_participants(int id){
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    stringstream ss;
+    int i = 1; //<! Just to enumerate the list
+    string serverName;
+
+    // To get the server name that the user are seeing
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        serverName = value.first;
+        break;
+      }
+    }
+
+    if(serverName == "--"){ //<! If the user is not in any server
+      return "list-participants: o usuário não está em nenhum servidor!";
+    }
+
+    ss << "list-participants: for user " << id << " in server [" << serverName << "]:" << endl;
+
+    // Now we are going to get all the user's names that are in the server
+    for(Servidor server : servidores){
+      if(server.getName() == serverName){
+        for(Usuario user : usuarios){
+          if(server.existParticipant(user.getId())){
+            ss << i << ") " << user.getName() << endl;
+            i++;
+          }
+        }
+        break; // After i get the right server, i don't need to look the others
+      }
+    }
+
+    string s = ss.str();
+    s.pop_back(); // Removes the last endl from the string
+    return s;
+  }
+  return "list-participants: usuário não existe ou não conectado!";
 }
 
 string Sistema::list_channels(int id) {
