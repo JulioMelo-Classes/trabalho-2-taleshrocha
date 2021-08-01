@@ -11,10 +11,11 @@ enter-server 1 batata
 list-participants 0
 list-participants 1
 enter-server 0 ervilha
+enter-server 0 errrado
 enter-server 1 ervilha
 list-participants 0
 list-participants 1
-leave-server 0 ervilha
+leave-server 0 errado
 list-participants 0
 list-participants 1
 quit

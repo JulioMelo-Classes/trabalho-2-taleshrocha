@@ -165,7 +165,9 @@ string Sistema::list_servers(int id) {
 
   // Get all the servers belonging to the id and put them into "ss"
   for(auto &server : servidores){
-    if(server.getId() == id) ss << server.getName() << endl;
+    if(server.getId() == id){
+      ss << server.getName() << endl;
+    }
   }
 
   string s = ss.str();
