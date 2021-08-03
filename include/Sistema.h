@@ -9,6 +9,7 @@
 #include "Servidor.h"
 #include "CanalTexto.h"
 #include "Usuario.h"
+#include "Mensagem.h"
 
 
 // Sistema deve concentrar todas as operações do Concordo

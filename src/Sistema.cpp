@@ -7,6 +7,7 @@
 #include <ctime>
 #include <vector>
 #include <cctype>
+#include <ctime>
 
 using namespace std;
 
@@ -423,7 +424,38 @@ string Sistema::leave_channel(int id) {
 }
 
 string Sistema::send_message(int id, const string mensagem) {
-  return "send_message NÃO IMPLEMENTADO";
+  string serverName;
+  string channelName;
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        serverName = value.first;
+        channelName = value.second;
+        break;
+      }
+    }
+    if(channelName == "--"){
+      return "send-message: você deve estar em um canal.";
+    }
+    // Creates the current time string.
+    char buffer[100];
+    time_t time = std::time(nullptr);
+    for(Servidor &server : servidores){
+      if(serverName == server.getName() and server.existTextChannel(channelName)){
+        if(strftime(buffer, sizeof(buffer), "<%d/%m/%y - %R>", localtime(&time))){
+          string s = buffer;
+          Mensagem message(id, s, mensagem);
+          CanalTexto canal = server.getChannel(channelName);
+          canal.addMessage(message);
+          //cout << mensagem << endl;
+          return "send-message: mensagem enviada com sucesso em " + s + ".";
+        }
+        return "send-message: não foi possível ter a data e hora de envio da mensagem. Verifique o seu sistema!";
+      }
+    }
+  }
+
+  return "send-message: usuário não existe ou não conectado!";
 }
 
 string Sistema::list_messages(int id) {

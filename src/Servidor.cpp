@@ -79,6 +79,16 @@ bool Servidor::existTextChannel(string name){
   return false;
 }
 
+CanalTexto Servidor::getChannel(string name){
+  CanalTexto c("----");
+  for(CanalTexto canal : canaisTexto){
+    if(canal.getName() == name){
+      return canal;
+    }
+  }
+  return c;
+}
+
 string Servidor::listTextChannels(){
   stringstream ss;
   int i = 1; //<! Just to enumerate the list
