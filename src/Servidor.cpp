@@ -1,5 +1,6 @@
 #include "Servidor.h"
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -18,6 +19,10 @@ void Servidor::setInviteCode(string codigoConvite){
 
 void Servidor::addParticipant(int id){
   this->participantesIds.push_back(id);
+}
+
+void Servidor::addTextChannel(CanalTexto canal){
+  this->canaisTexto.push_back(canal);
 }
 
 void Servidor::removeParticipant(int id){
@@ -59,4 +64,30 @@ bool Servidor::existParticipant(int id){
   }
   //cout << "false" << endl;
   return false;
+}
+
+bool Servidor::existTextChannel(CanalTexto canal){
+  //cout << canaisTexto.size() << endl;
+  for(CanalTexto canal_ : canaisTexto){
+    //cout << "Nomes: " << canal_.getName() << " " << canal.getName() << endl;
+    if(canal_.getName() == canal.getName()){
+      //cout << "true" << endl;
+      return true;
+    }
+  }
+  //cout << "false" << endl;
+  return false;
+}
+
+string Servidor::listTextChannels(){
+  stringstream ss;
+  int i = 1; //<! Just to enumerate the list
+
+  for(CanalTexto canal  : canaisTexto){
+    ss << i << ") " << canal.getName() << endl;
+    i++;
+  }
+
+  string s = ss.str();
+  return s;
 }

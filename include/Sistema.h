@@ -7,7 +7,7 @@
 
 #include "Usuario.h"
 #include "Servidor.h"
-#include "Canaltexto.h"
+#include "CanalTexto.h"
 #include "Usuario.h"
 
 

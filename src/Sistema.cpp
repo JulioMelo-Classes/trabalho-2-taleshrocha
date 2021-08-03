@@ -300,11 +300,68 @@ string Sistema::list_participants(int id){
 }
 
 string Sistema::list_channels(int id) {
-  return "list_channels NÃO IMPLEMENTADO";
+  // TODO: comments.
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    stringstream ss;
+    string serverName;
+
+    // To get the server name that the user are seeing
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        serverName = value.first;
+        break;
+      }
+    }
+
+    if(serverName == "--"){ //<! If the user is not in any server
+      return "list-channels: o usuário não está em nenhum servidor!";
+    }
+
+    ss << "list-channels: for user " << id << " in server [" << serverName << "]:" << endl;
+
+    // Now we are going to get all the user's names that are in the server
+    for(Servidor server : servidores){
+      if(server.getName() == serverName){
+        ss << server.listTextChannels();
+        break; // After i get the right server, i don't need to look the others
+      }
+    }
+
+    string s = ss.str();
+    s.pop_back(); // Removes the last endl from the string
+    return s;
+  }
+  return "list-channels: usuário não existe ou não conectado!";
 }
 
 string Sistema::create_channel(int id, const string nome) {
-  return "create_channel NÃO IMPLEMENTADO";
+  // TODO: comments.
+  string serverName;
+  CanalTexto canal(nome); // TODO: fix that constructor
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        serverName = value.first;
+        break;
+      }
+    }
+    if(serverName == "--"){
+      return "create-channel: não podes criar o canal ["+ canal.getName() +"]! Primeiro entre em um servidor.";
+    }
+    for(Servidor &server : servidores){
+      if(id != server.getId() and server.getName() == serverName){
+        return "create-channel: não podes criar o canal ["+ canal.getName() +"] em um servidor que não é seu [" + serverName + "]!";
+      }
+      if(server.getName() == serverName and server.existTextChannel(canal)){
+        return "create-channel: já existe um canal com o nome [" + canal.getName() + "] no servidor [" + serverName + "]!";
+      }
+      if(server.getName() == serverName){
+        server.addTextChannel(canal);
+        return "create-channel: canal [" + canal.getName() + "] criado com sucesso no servidor ["+ serverName +"].";
+      }
+    }
+  }
+  return "create-channel: usuário não existente ou não conectado!";
 }
 
 string Sistema::enter_channel(int id, const string nome) {
@@ -322,8 +379,3 @@ string Sistema::send_message(int id, const string mensagem) {
 string Sistema::list_messages(int id) {
   return "list_messages NÃO IMPLEMENTADO";
 }
-
-
-
-
-/* IMPLEMENTAR MÉTODOS PARA OS COMANDOS RESTANTES */

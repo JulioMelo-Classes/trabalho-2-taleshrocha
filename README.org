@@ -7,8 +7,7 @@
 ██║     ██║   ██║██║╚██╗██║██║     ██║   ██║██╔══██╗██║  ██║
 ╚██████╗╚██████╔╝██║ ╚████║╚██████╗╚██████╔╝██║  ██║██████╔╝
 ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝
-            É tipo Discord, só que melhor!
-                    (Só que não)
+                  Concord's Not Discord
 #+end_src
 
 - This project is a discord back-end clone written in cpp.
