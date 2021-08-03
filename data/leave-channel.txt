@@ -1,0 +1,15 @@
+create-user email senha tales
+login email senha
+create-user email2 senha thanos
+login email2 senha
+create-server 0 batata
+enter-server 0 batata
+create-channel 0 canalegal
+create-channel 0 canalegal2
+list-channels 0
+enter-channel 0 canalegal
+leave-channel 0
+leave-channel 0
+leave-channel 1
+quit
+Y

@@ -394,7 +394,32 @@ string Sistema::enter_channel(int id, const string nome) {
 }
 
 string Sistema::leave_channel(int id) {
-  return "leave_channel NÃO IMPLEMENTADO";
+  string serverName;
+  string channelName;
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        channelName = value.second;
+        serverName = value.first;
+        break;
+      }
+    }
+    if(serverName == "--"){
+      return "leave-channel: primeiro, entre em um servidor.";
+    }
+    for(Servidor server : servidores){
+      if(serverName == server.getName() and channelName != "--"){
+        for(auto& [key, value] : usuariosLogados){
+          if(key == id){
+            value.second = "--";
+          }
+        }
+        return "leave-channel: você saiu do canal: [" + channelName + "] do servidor: [" + serverName + "].";
+      }
+    }
+    return "leave-channel: você já não está em nenhum canal do servidor: [" + serverName + "]!";
+  }
+  return "leave-channel: usuário não existe ou não conectado!";
 }
 
 string Sistema::send_message(int id, const string mensagem) {
