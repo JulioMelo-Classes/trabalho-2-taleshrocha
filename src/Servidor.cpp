@@ -66,11 +66,11 @@ bool Servidor::existParticipant(int id){
   return false;
 }
 
-bool Servidor::existTextChannel(CanalTexto canal){
+bool Servidor::existTextChannel(string name){
   //cout << canaisTexto.size() << endl;
-  for(CanalTexto canal_ : canaisTexto){
+  for(CanalTexto canal : canaisTexto){
     //cout << "Nomes: " << canal_.getName() << " " << canal.getName() << endl;
-    if(canal_.getName() == canal.getName()){
+    if(canal.getName() == name){
       //cout << "true" << endl;
       return true;
     }

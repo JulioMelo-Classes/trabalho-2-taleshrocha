@@ -2,18 +2,14 @@ create-user email senha tales
 login email senha
 create-user email2 senha thanos
 login email2 senha
-create-server 0 ervilha
 create-server 0 batata
-create-server 0 cenoura
 enter-server 0 batata
-create-channel 0 canalegal
+enter-server 1 batata
 create-channel 0 canalegal
 create-channel 0 canalegal2
-create-channel 1 canalilegal
-enter-server 1 batata
-enter-server 1 cenoura
-create-channel 1 canalilegal
 list-channels 0
-list-channels 1
+enter-channel 0 canalegal
+enter-channel 0 canalilegal
+enter-channel 2 canalilegal
 quit
 Y

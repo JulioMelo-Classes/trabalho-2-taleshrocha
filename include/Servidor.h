@@ -69,7 +69,7 @@ public:
 	/*! See if a user is a server participant.
 	  @param id A integer containing some user's id.
 	  @return True If the user is in the server. False otherwise. */
-	bool existTextChannel(CanalTexto canal);
+	bool existTextChannel(std::string name);
 
 	std::string listTextChannels();
 };

@@ -208,6 +208,7 @@ string Sistema::remove_server(int id, const string nome) {
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
+  // TODO: if the participant already enter in the server with the key, he doesnt need it anymore.
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(Servidor &server : servidores){
       //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
@@ -221,14 +222,14 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
               value.first = nome;
             }
           }
-          return "enter_server: você está no servidor [" + nome + "].";
+          return "enter-server: você está no servidor [" + nome + "].";
         }
         else{
-          return "enter_server: código de convite nulo ou errado!";
+          return "enter-server: código de convite nulo ou errado!";
         }
       }
     }
-    return "enter_server: servidor não existe!";
+    return "enter-server: servidor não existe!";
   }
   return "enter-server: usuário não existe ou não conectado!";
 }
@@ -301,6 +302,7 @@ string Sistema::list_participants(int id){
 
 string Sistema::list_channels(int id) {
   // TODO: comments.
+  // TODO: if there is no channel send a apropriate message.
   if(usuariosLogados.contains(id)){ // See if the user is logged
     stringstream ss;
     string serverName;
@@ -352,7 +354,7 @@ string Sistema::create_channel(int id, const string nome) {
       if(id != server.getId() and server.getName() == serverName){
         return "create-channel: não podes criar o canal ["+ canal.getName() +"] em um servidor que não é seu [" + serverName + "]!";
       }
-      if(server.getName() == serverName and server.existTextChannel(canal)){
+      if(server.getName() == serverName and server.existTextChannel(canal.getName())){
         return "create-channel: já existe um canal com o nome [" + canal.getName() + "] no servidor [" + serverName + "]!";
       }
       if(server.getName() == serverName){
@@ -365,7 +367,30 @@ string Sistema::create_channel(int id, const string nome) {
 }
 
 string Sistema::enter_channel(int id, const string nome) {
-  return "enter_channel NÃO IMPLEMENTADO";
+  string serverName;
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        serverName = value.first;
+        break;
+      }
+    }
+    if(serverName == "--"){
+      return "enter-channel: primeiro, entre em um servidor.";
+    }
+    for(Servidor server : servidores){
+      if(serverName == server.getName() and server.existTextChannel(nome)){
+        for(auto& [key, value] : usuariosLogados){
+          if(key == id){
+            value.second = nome;
+          }
+        }
+        return "enter-channel: você está no canal: [" + nome + "] do servidor: [" + serverName + "].";
+      }
+    }
+    return "enter-channel: canal: [" + nome + "] não existe no servidor: [" + serverName + "]!";
+  }
+  return "enter-channel: usuário não existe ou não conectado!";
 }
 
 string Sistema::leave_channel(int id) {
