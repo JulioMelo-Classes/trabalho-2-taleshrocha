@@ -1,4 +1,5 @@
 #include "CanalTexto.h"
+#include <iostream>
 
 using namespace std;
 
@@ -11,9 +12,21 @@ void CanalTexto::setName(string name){
 }
 
 void CanalTexto::addMessage(Mensagem message){
-  messages.push_back(message);
+  //cout << "ahhhhhh" << endl;
+  //cout << message.getContent() << endl;
+  this->messages.push_back(message);
+  for(Mensagem message : this->messages){
+    cout << message.getContent() << endl;
+  }
 }
 
 string CanalTexto::getName(){
   return name;
+}
+
+void CanalTexto::listMessages(){
+  cout << "list" << endl;
+  for(Mensagem &message : this->messages){
+    cout << message.getOwnerName() << message.getDate() << ": " << message.getContent() << endl;
+  }
 }

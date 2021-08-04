@@ -71,7 +71,7 @@ public:
 	  @return True If the user is in the server. False otherwise. */
 	bool existTextChannel(std::string name);
 
-	CanalTexto getChannel(std::string name);
+	CanalTexto* getChannel(std::string name);
 
 	std::string listTextChannels();
 };

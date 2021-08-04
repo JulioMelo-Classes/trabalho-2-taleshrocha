@@ -426,6 +426,12 @@ string Sistema::leave_channel(int id) {
 string Sistema::send_message(int id, const string mensagem) {
   string serverName;
   string channelName;
+  string userName;
+  for(Usuario user : usuarios){
+    if(user.getId() == id){
+      userName = user.getName();
+    }
+  }
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
@@ -444,9 +450,9 @@ string Sistema::send_message(int id, const string mensagem) {
       if(serverName == server.getName() and server.existTextChannel(channelName)){
         if(strftime(buffer, sizeof(buffer), "<%d/%m/%y - %R>", localtime(&time))){
           string s = buffer;
-          Mensagem message(id, s, mensagem);
-          CanalTexto canal = server.getChannel(channelName);
-          canal.addMessage(message);
+          Mensagem message(id, userName, s, mensagem);
+          CanalTexto *canal = server.getChannel(channelName);
+          canal->addMessage(message);
           //cout << mensagem << endl;
           return "send-message: mensagem enviada com sucesso em " + s + ".";
         }
@@ -459,5 +465,35 @@ string Sistema::send_message(int id, const string mensagem) {
 }
 
 string Sistema::list_messages(int id) {
-  return "list_messages NÃO IMPLEMENTADO";
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    string serverName;
+    string channelName;
+
+    // To get the server name that the user are seeing
+    for(const auto& [key, value] : usuariosLogados){
+      if(key == id){
+        serverName = value.first;
+        channelName = value.second;
+        break;
+      }
+    }
+
+    if(serverName == "--"){ //<! If the user is not in any server
+      return "list-messages: o usuário não está em nenhum servidor!";
+    }
+
+    //ss << "list-messages: for user " << id << " in server [" << serverName << "]:" << endl;
+
+    // Now we are going to get all the user's names that are in the server
+    for(Servidor server : servidores){
+      if(server.getName() == serverName and server.existTextChannel(channelName)){
+        CanalTexto *channel = server.getChannel(channelName);
+        channel->listMessages();
+        break; // After i get the right server, i don't need to look the others
+      }
+    }
+
+    return "";
+  }
+  return "list-messages: usuário não existe ou não conectado!";
 }

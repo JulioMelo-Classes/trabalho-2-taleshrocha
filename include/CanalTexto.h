@@ -24,6 +24,8 @@ public:
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
 	void addMessage(Mensagem message);
 
+	void listMessages();
+
 	/*! Remove a participant's id of the participantesIds vector.
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
 	void removeMensage(int id);

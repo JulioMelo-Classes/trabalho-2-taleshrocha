@@ -4,8 +4,9 @@
 
 using namespace std;
 
-Mensagem::Mensagem(int owner, string date, string content){
-  this->owner = owner;
+Mensagem::Mensagem(int ownerId, string ownerName, string date, string content){
+  this->ownerId = ownerId;
+  this->ownerName = ownerName;
   this->date = date;
   this->content = content;
 }
@@ -14,8 +15,18 @@ void Mensagem::setContent(std::string content){
   this->content = content;
 }
 
-//std::string getDate();
+std::string Mensagem::getDate(){
+  return date;
+}
 
-//int getOwner();
+int Mensagem::getOwnerId(){
+  return ownerId;
+}
 
-//std::string getContent();
+string Mensagem::getOwnerName(){
+  return ownerName;
+}
+
+string Mensagem::getContent(){
+ return content;
+}
