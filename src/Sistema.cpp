@@ -106,9 +106,9 @@ string Sistema::disconnect(int id) {
 
 string Sistema::create_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    Servidor server(id, nome);
-    for(Servidor server : servidores) // Seek for a existing server name in the user domain
-      if(nome == server.getName() and id == server.getId()){
+    shared_ptr<Servidor> server(new Servidor(id, nome));
+    for(shared_ptr<Servidor> server : servidores) // BUG this->servidores? Seek for a existing server name in the user domain
+      if(nome == server->getName() and id == server->getId()){
         return "create_server: já existe um servidor com esse nome!";
       }
 
@@ -122,10 +122,10 @@ string Sistema::create_server(int id, const string nome) {
 
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(Servidor server : servidores){ // Seek for a existing server name in the user domain
-      if(nome == server.getName()){
-        if(id == server.getId()){
-          server.setDesc(descricao);
+    for(shared_ptr<Servidor> server : servidores){ // Seek for a existing server name in the user domain
+      if(nome == server->getName()){
+        if(id == server->getId()){
+          server->setDesc(descricao);
           return "set_server_desc: descrição do servidor [" + nome + "] modificada.";
         }
         else return "set_server_desc: você não pode alterar a descrição de um servidor que não foi criado por você!";
@@ -138,10 +138,10 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(Servidor &server : servidores){ // Seek for a existing server name in the user domain
-      if(nome == server.getName()){
-        if(id == server.getId()){
-          server.setInviteCode(codigo);
+    for(shared_ptr<Servidor> &server : servidores){ // Seek for a existing server name in the user domain
+      if(nome == server->getName()){
+        if(id == server->getId()){
+          server->setInviteCode(codigo);
           if(codigo.empty()){
             return "set_server_invite_code: codigo de convite do servidor [" + nome + "] removido.";
           }
@@ -166,8 +166,8 @@ string Sistema::list_servers(int id) {
 
   // Get all the servers belonging to the id and put them into "ss"
   for(auto &server : servidores){
-    if(server.getId() == id){
-      ss << server.getName() << endl;
+    if(server->getId() == id){
+      ss << server->getName() << endl;
     }
   }
 
@@ -184,17 +184,18 @@ string Sistema::list_servers(int id) {
 string Sistema::remove_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(auto server = servidores.begin(); server != servidores.end(); server++){
-      if(server->getName() == nome){
-        if(server->getId() == id){
+      //for(shared_ptr<Servidor> server : servidores){ // BUG this->servidores? Seek for a existing server name in the user domain
+      if((*server)->getName() == nome){
+        if((*server)->getId() == id){
           for(auto& [key, value] : usuariosLogados){
             // See if the server that the user are seeing are equal to the server to be deleted
-            if(value.first == server->getName()){
+            if(value.first == (*server)->getName()){
               value.first = "--";  // Removes the deleted server from the user view
               value.second = "--"; // Removes the deleted server's channel from the user view
             }
           }
           servidores.erase(server);
-          return "remove_server: servidor [" + server->getName() + "] removido.";
+          return "remove_server: servidor [" + (*server)->getName() + "] removido.";
         }
         else{
           return "remove_server: você não pode remover um servidor que não é seu!";
@@ -211,12 +212,12 @@ string Sistema::remove_server(int id, const string nome) {
 string Sistema::enter_server(int id, const string nome, const string codigo) {
   // TODO: if the participant already enter in the server with the key, he doesnt need it anymore.
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(Servidor &server : servidores){
-      //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
-      if(nome == server.getName()){
-        if(server.getInviteCode().empty() or codigo == server.getInviteCode() or id == server.getId()){
-          //cout << "in enter " << server.getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
-          server.addParticipant(id);
+    for(shared_ptr<Servidor> &server : servidores){
+      //cout << "in enter " << server->getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
+      if(nome == server->getName()){
+        if(server->getInviteCode().empty() or codigo == server->getInviteCode() or id == server->getId()){
+          //cout << "in enter " << server->getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
+          server->addParticipant(id);
           for(auto& [key, value] : usuariosLogados){
             //cout << key << " " << value.first << " " << value.second << endl; // DEBUG
             if(key == id){
@@ -237,10 +238,10 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
 
 string Sistema::leave_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(Servidor &server : servidores){
-      if(nome == server.getName()){
-        if(server.existParticipant(id)){
-          server.removeParticipant(id);
+    for(shared_ptr<Servidor> &server : servidores){
+      if(nome == server->getName()){
+        if(server->existParticipant(id)){
+          server->removeParticipant(id);
           for(auto& [key, value] : usuariosLogados){
             //cout << key << " " << value.first << " " << value.second << endl; // BUG
             if(key == id){
@@ -256,7 +257,7 @@ string Sistema::leave_server(int id, const string nome) {
         }
       }
     }
-      return "leave-server: servidor [" + nome + "] não existe!";
+    return "leave-server: servidor [" + nome + "] não existe!";
   }
   return "enter-server: usuário não existe ou não conectado!";
 }
@@ -282,10 +283,10 @@ string Sistema::list_participants(int id){
     ss << "list-participants: for user " << id << " in server [" << serverName << "]:" << endl;
 
     // Now we are going to get all the user's names that are in the server
-    for(Servidor server : servidores){
-      if(server.getName() == serverName){
+    for(shared_ptr<Servidor> server : servidores){
+      if(server->getName() == serverName){
         for(Usuario user : usuarios){
-          if(server.existParticipant(user.getId())){
+          if(server->existParticipant(user.getId())){
             ss << i << ") " << user.getName() << endl;
             i++;
           }
@@ -323,9 +324,9 @@ string Sistema::list_channels(int id) {
     ss << "list-channels: for user " << id << " in server [" << serverName << "]:" << endl;
 
     // Now we are going to get all the user's names that are in the server
-    for(Servidor server : servidores){
-      if(server.getName() == serverName){
-        ss << server.listTextChannels();
+    for(shared_ptr<Servidor> server : servidores){
+      if(server->getName() == serverName){
+        ss << server->listTextChannels();
         break; // After i get the right server, i don't need to look the others
       }
     }
@@ -351,15 +352,15 @@ string Sistema::create_channel(int id, const string nome) {
     if(serverName == "--"){
       return "create-channel: não podes criar o canal ["+ canal.getName() +"]! Primeiro entre em um servidor.";
     }
-    for(Servidor &server : servidores){
-      if(id != server.getId() and server.getName() == serverName){
+    for(shared_ptr<Servidor> &server : servidores){
+      if(id != server->getId() and server->getName() == serverName){
         return "create-channel: não podes criar o canal ["+ canal.getName() +"] em um servidor que não é seu [" + serverName + "]!";
       }
-      if(server.getName() == serverName and server.existTextChannel(canal.getName())){
+      if(server->getName() == serverName and server->existTextChannel(canal.getName())){
         return "create-channel: já existe um canal com o nome [" + canal.getName() + "] no servidor [" + serverName + "]!";
       }
-      if(server.getName() == serverName){
-        server.addTextChannel(canal);
+      if(server->getName() == serverName){
+        server->addTextChannel(canal);
         return "create-channel: canal [" + canal.getName() + "] criado com sucesso no servidor ["+ serverName +"].";
       }
     }
@@ -379,8 +380,8 @@ string Sistema::enter_channel(int id, const string nome) {
     if(serverName == "--"){
       return "enter-channel: primeiro, entre em um servidor.";
     }
-    for(Servidor server : servidores){
-      if(serverName == server.getName() and server.existTextChannel(nome)){
+    for(shared_ptr<Servidor> server : servidores){
+      if(serverName == server->getName() and server->existTextChannel(nome)){
         for(auto& [key, value] : usuariosLogados){
           if(key == id){
             value.second = nome;
@@ -408,8 +409,8 @@ string Sistema::leave_channel(int id) {
     if(serverName == "--"){
       return "leave-channel: primeiro, entre em um servidor.";
     }
-    for(Servidor server : servidores){
-      if(serverName == server.getName() and channelName != "--"){
+    for(shared_ptr<Servidor> server : servidores){
+      if(serverName == server->getName() and channelName != "--"){
         for(auto& [key, value] : usuariosLogados){
           if(key == id){
             value.second = "--";
@@ -446,12 +447,12 @@ string Sistema::send_message(int id, const string mensagem) {
     // Creates the current time string.
     char buffer[100];
     time_t time = std::time(nullptr);
-    for(Servidor &server : servidores){
-      if(serverName == server.getName() and server.existTextChannel(channelName)){
+    for(shared_ptr<Servidor> &server : servidores){
+      if(serverName == server->getName() and server->existTextChannel(channelName)){
         if(strftime(buffer, sizeof(buffer), "<%d/%m/%y - %R>", localtime(&time))){
           string s = buffer;
-          Mensagem message(id, userName, s, mensagem);
-          CanalTexto *canal = server.getChannel(channelName);
+          shared_ptr<Mensagem> message(new Mensagem(id, userName, s, mensagem));
+          CanalTexto *canal = server->getChannel(channelName);
           canal->addMessage(message);
           //cout << mensagem << endl;
           return "send-message: mensagem enviada com sucesso em " + s + ".";
@@ -482,18 +483,18 @@ string Sistema::list_messages(int id) {
       return "list-messages: o usuário não está em nenhum servidor!";
     }
 
-    //ss << "list-messages: for user " << id << " in server [" << serverName << "]:" << endl;
+    cout << "list-messages: for user " << id << " in server [" << serverName << "] and channel [" << channelName  << "]:" << endl;
 
     // Now we are going to get all the user's names that are in the server
-    for(Servidor server : servidores){
-      if(server.getName() == serverName and server.existTextChannel(channelName)){
-        CanalTexto *channel = server.getChannel(channelName);
+    for(shared_ptr<Servidor> server : servidores){
+      if(server->getName() == serverName and server->existTextChannel(channelName)){
+        CanalTexto *channel = server->getChannel(channelName);
         channel->listMessages();
         break; // After i get the right server, i don't need to look the others
       }
     }
 
-    return "";
+    return "Fim das mensagens.";
   }
   return "list-messages: usuário não existe ou não conectado!";
 }

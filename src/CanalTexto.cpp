@@ -11,13 +11,11 @@ void CanalTexto::setName(string name){
   this->name = name;
 }
 
-void CanalTexto::addMessage(Mensagem message){
-  //cout << "ahhhhhh" << endl;
-  //cout << message.getContent() << endl;
+void CanalTexto::addMessage(std::shared_ptr<Mensagem> message){
   this->messages.push_back(message);
-  for(Mensagem message : this->messages){
-    cout << message.getContent() << endl;
-  }
+  //for(Mensagem message : this->messages){
+  //  cout << message.getContent() << endl;
+  //}
 }
 
 string CanalTexto::getName(){
@@ -25,8 +23,9 @@ string CanalTexto::getName(){
 }
 
 void CanalTexto::listMessages(){
-  cout << "list" << endl;
-  for(Mensagem &message : this->messages){
-    cout << message.getOwnerName() << message.getDate() << ": " << message.getContent() << endl;
+  int i = 1;
+  for(shared_ptr<Mensagem> message : this->messages){
+    cout << i << ") " << message->getOwnerName() << message->getDate() << ": " << message->getContent() << endl;
+    i++;
   }
 }

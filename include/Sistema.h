@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <memory>
 
 #include "Usuario.h"
 #include "Servidor.h"
@@ -15,7 +16,7 @@
 // Sistema deve concentrar todas as operações do Concordo
 class Sistema {
   private:
-		std::vector<Servidor> servidores; //<! um vetor com todos os servidores
+		std::vector<std::shared_ptr<Servidor>> servidores; //<! um vetor com todos os servidores
 		std::vector<Usuario> usuarios; //<! um vetor com todos os usuários cadastrados
 		std::map< int, std::pair<std::string, std::string> > usuariosLogados; //<! um vetor contendo os usuários que logaram no sistema
 
@@ -108,7 +109,7 @@ class Sistema {
 		*/
 		std::string enter_server(int id, const std::string nome, const std::string codigo);
 
-		/*! Faz com oque o usuário conectado em algum servidor saia do mesmo. Deve retornar uma string
+		/*! Faz com que o usuário conectado em algum servidor saia do mesmo. Deve retornar uma string
 				com uma mensagem de sucesso ou uma mensagem de erro caso contrário. No caso que o servidor
 				passado como agumento para este método é o mesmo que o servidor em que o usuário está 
 				visualizando atualmente (usando o valor guardado em Sistema::usuariosLogados) este método

@@ -1,5 +1,0 @@
-create-user email senha tales
-login email senha
-create-server 0 batata
-set-server-invite-code 0 batata 1234
-enter-server 0 batata

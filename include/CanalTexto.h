@@ -2,6 +2,7 @@
 #define CANALTEXTO_H
 #include <string>
 #include <vector>
+#include <memory>
 #include "Mensagem.h"
 
 // TODO: documentation.
@@ -9,7 +10,7 @@
 class CanalTexto{
 private:
 	std::string name;
-	std::vector<Mensagem> messages; // No get set
+	std::vector<std::shared_ptr<Mensagem>> messages; // No get set
 public:
 
 	/*! The class's constructor.
@@ -22,7 +23,7 @@ public:
 
 	/*! Add a user's id to the participantesIds vector.
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
-	void addMessage(Mensagem message);
+	void addMessage(std::shared_ptr<Mensagem> message);
 
 	void listMessages();
 

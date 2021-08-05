@@ -1,0 +1,17 @@
+create-user email senha tales
+login email senha
+create-user email2 senha2 jonh
+login email2 senha2
+create-server 0 batata
+enter-server 0 batata
+enter-server 1 batata
+create-channel 0 canalegal
+enter-channel 0 canalegal
+enter-channel 1 canalegal
+send-message 0 fala galeura!
+send-message 1 fala mano, como é que tá?
+send-message 0 Eaê jonh. Tá tudo beleuza! E vc?
+send-message 1 Tá massa aqui tb!
+list-messages 0
+quit
+Y
