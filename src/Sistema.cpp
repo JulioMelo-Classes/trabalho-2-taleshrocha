@@ -161,24 +161,25 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
 }
 
 string Sistema::list_servers(int id) {
-  stringstream ss;
-  ss << "list_servers: for user " << id << ":" << endl;
+  if(usuariosLogados.contains(id)){ // See if the user is logged
+    int i = 1;
+    cout << "list-servers: for user " << id << ":" << endl;
 
-  // Get all the servers belonging to the id and put them into "ss"
-  for(auto &server : servidores){
-    if(server->getId() == id){
-      ss << server->getName() << endl;
+    // Get all the servers belonging to the id and put them into "ss"
+    for(auto &server : servidores){
+      if(server->getId() == id){
+        cout << i << ") " << server->getName() << endl;
+        i++;
+      }
     }
+
+    if(i == 1){
+      return "list-servers: não foram encontrados servidores para esse usuário!";
+    }
+
+    return "Fim dos servidores.";
   }
-
-  string s = ss.str();
-
-  if(s.empty()){
-    return "list_servers: não foram encontrados servidores para esse usuário!";
-  }
-
-  s.pop_back(); // Removes the last endl from the string
-  return s;
+  return "list-servers: usuário não existe ou não conectado!";
 }
 
 string Sistema::remove_server(int id, const string nome) {
@@ -264,7 +265,6 @@ string Sistema::leave_server(int id, const string nome) {
 
 string Sistema::list_participants(int id){
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    stringstream ss;
     int i = 1; //<! Just to enumerate the list
     string serverName;
 
@@ -280,14 +280,14 @@ string Sistema::list_participants(int id){
       return "list-participants: o usuário não está em nenhum servidor!";
     }
 
-    ss << "list-participants: for user " << id << " in server [" << serverName << "]:" << endl;
+    cout << "list-participants: for user " << id << " in server [" << serverName << "]:" << endl;
 
     // Now we are going to get all the user's names that are in the server
     for(shared_ptr<Servidor> server : servidores){
       if(server->getName() == serverName){
         for(Usuario user : usuarios){
           if(server->existParticipant(user.getId())){
-            ss << i << ") " << user.getName() << endl;
+            cout << i << ") " << user.getName() << endl;
             i++;
           }
         }
@@ -295,9 +295,7 @@ string Sistema::list_participants(int id){
       }
     }
 
-    string s = ss.str();
-    s.pop_back(); // Removes the last endl from the string
-    return s;
+    return "Fim dos participantes.";
   }
   return "list-participants: usuário não existe ou não conectado!";
 }
@@ -306,8 +304,8 @@ string Sistema::list_channels(int id) {
   // TODO: comments.
   // TODO: if there is no channel send a apropriate message.
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    stringstream ss;
     string serverName;
+    bool areChannels;
 
     // To get the server name that the user are seeing
     for(const auto& [key, value] : usuariosLogados){
@@ -321,19 +319,21 @@ string Sistema::list_channels(int id) {
       return "list-channels: o usuário não está em nenhum servidor!";
     }
 
-    ss << "list-channels: for user " << id << " in server [" << serverName << "]:" << endl;
+    cout << "list-channels: for user " << id << " in server [" << serverName << "]:" << endl;
 
     // Now we are going to get all the user's names that are in the server
     for(shared_ptr<Servidor> server : servidores){
       if(server->getName() == serverName){
-        ss << server->listTextChannels();
+        areChannels = server->listTextChannels();
         break; // After i get the right server, i don't need to look the others
       }
     }
 
-    string s = ss.str();
-    s.pop_back(); // Removes the last endl from the string
-    return s;
+    if(!areChannels){
+      return "Não existem canais para " + serverName + ".";
+    }
+
+    return "Fim dos canais.";
   }
   return "list-channels: usuário não existe ou não conectado!";
 }

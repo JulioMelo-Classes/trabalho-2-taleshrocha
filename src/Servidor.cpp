@@ -89,15 +89,18 @@ CanalTexto* Servidor::getChannel(string name){
   return &c;
 }
 
-string Servidor::listTextChannels(){
-  stringstream ss;
+bool Servidor::listTextChannels(){
   int i = 1; //<! Just to enumerate the list
 
   for(CanalTexto canal  : canaisTexto){
-    ss << i << ") " << canal.getName() << endl;
+    cout << i << ") " << canal.getName() << endl;
     i++;
   }
 
-  string s = ss.str();
-  return s;
+  if(i != 1){
+    return true;
+  }
+  else{
+    return false;
+  }
 }

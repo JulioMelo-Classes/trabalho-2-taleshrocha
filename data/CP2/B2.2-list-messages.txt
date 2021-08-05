@@ -11,7 +11,9 @@ enter-channel 1 canalegal
 send-message 0 fala galeura!
 send-message 1 fala mano, como é que tá?
 send-message 0 Eaê jonh. Tá tudo beleuza! E vc?
-send-message 1 Tá massa aqui tb!
+send-message 1 Tá massa aqui tb! Só que tem esse trabalho de LP1 aí. Um tal de concord que tá acabando comigo.
+send-message 0 Putz, aqui tb. E tem fmc2 ainda! Mizera.
+send-message 1 :(
 list-messages 0
 quit
 Y

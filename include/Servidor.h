@@ -73,7 +73,7 @@ public:
 
 	CanalTexto* getChannel(std::string name);
 
-	std::string listTextChannels();
+	bool listTextChannels();
 };
 
 #endif
