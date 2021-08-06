@@ -56,13 +56,10 @@ string Servidor::getInviteCode(){
 
 bool Servidor::existParticipant(int id){
   for(int id_ : participantesIds){
-    //cout << id << id_ << endl;
     if(id_ == id){
-      //cout << "true" << endl;
       return true;
     }
   }
-  //cout << "false" << endl;
   return false;
 }
 
@@ -80,13 +77,13 @@ bool Servidor::existTextChannel(string name){
 }
 
 CanalTexto* Servidor::getChannel(string name){
-  CanalTexto c("----");
+  //CanalTexto c("----");
   for(CanalTexto &canal : canaisTexto){
     if(canal.getName() == name){
       return &canal;
     }
   }
-  return &c;
+  return nullptr;
 }
 
 bool Servidor::listTextChannels(){

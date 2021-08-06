@@ -1,18 +1,10 @@
 create-user email senha tales
 login email senha
-create-user email2 senha thanos
-login email2 senha
+create-user email2 senha2 jonh
+login email2 senha2
 create-server 0 batata
 enter-server 0 batata
 enter-server 1 batata
 list-participants 0
-list-participants 1
-enter-server 0 ervilha
-enter-server 1 ervilha
-list-participants 0
-list-participants 1
-leave-server 0 ervilha
-list-participants 0
-list-participants 1
 quit
 Y

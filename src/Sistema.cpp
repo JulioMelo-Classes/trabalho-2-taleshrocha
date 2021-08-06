@@ -74,7 +74,9 @@ string Sistema::login(const string email, const string senha){
   for(Usuario u : usuarios){
     if(email == u.getEmail() and senha == u.getKeyword()){ //<! Checks if the user email and keyword exists
       if(!usuariosLogados.contains(u.getId())){ //<! See if the user is not already logged
-        usuariosLogados.insert(make_pair(u.getId(), make_pair("--", "--")));
+        shared_ptr<string> n1(new string("--"));
+        shared_ptr<string> n2(new string("--"));
+        usuariosLogados.insert(make_pair(u.getId(), make_pair(n1, n2)));
         return "login: logado como " + email;
       }
       else{
@@ -107,9 +109,9 @@ string Sistema::disconnect(int id) {
 string Sistema::create_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     shared_ptr<Servidor> server(new Servidor(id, nome));
-    for(shared_ptr<Servidor> server : servidores) // BUG this->servidores? Seek for a existing server name in the user domain
+    for(shared_ptr<Servidor> server : this->servidores) // Seek for a existing server name in the user domain
       if(nome == server->getName() and id == server->getId()){
-        return "create_server: já existe um servidor com esse nome!";
+        return "create-server: já existe um servidor com esse nome!";
       }
 
     servidores.push_back(server);
@@ -185,14 +187,13 @@ string Sistema::list_servers(int id) {
 string Sistema::remove_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(auto server = servidores.begin(); server != servidores.end(); server++){
-      //for(shared_ptr<Servidor> server : servidores){ // BUG this->servidores? Seek for a existing server name in the user domain
       if((*server)->getName() == nome){
         if((*server)->getId() == id){
-          for(auto& [key, value] : usuariosLogados){
+          for(auto &[key, value] : usuariosLogados){
             // See if the server that the user are seeing are equal to the server to be deleted
-            if(value.first == (*server)->getName()){
-              value.first = "--";  // Removes the deleted server from the user view
-              value.second = "--"; // Removes the deleted server's channel from the user view
+            if(*(value.first) == (*server)->getName()){
+              *(value.first) = "--";  // Removes the deleted server from the user view
+              *(value.second) = "--"; // Removes the deleted server's channel from the user view
             }
           }
           servidores.erase(server);
@@ -211,18 +212,14 @@ string Sistema::remove_server(int id, const string nome) {
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
-  // TODO: if the participant already enter in the server with the key, he doesnt need it anymore.
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(shared_ptr<Servidor> &server : servidores){
-      //cout << "in enter " << server->getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
       if(nome == server->getName()){
-        if(server->getInviteCode().empty() or codigo == server->getInviteCode() or id == server->getId()){
-          //cout << "in enter " << server->getName() << " " << "[" << server.getInviteCode() << "]"<< endl; // DEBUG
+        if(server->existParticipant(id) or server->getInviteCode().empty() or codigo == server->getInviteCode() or id == server->getId()){
           server->addParticipant(id);
           for(auto& [key, value] : usuariosLogados){
-            //cout << key << " " << value.first << " " << value.second << endl; // DEBUG
             if(key == id){
-              value.first = nome;
+              *(value.first) = nome;
             }
           }
           return "enter-server: você está no servidor [" + nome + "].";
@@ -244,11 +241,9 @@ string Sistema::leave_server(int id, const string nome) {
         if(server->existParticipant(id)){
           server->removeParticipant(id);
           for(auto& [key, value] : usuariosLogados){
-            //cout << key << " " << value.first << " " << value.second << endl; // BUG
             if(key == id){
-              value.first = "--";
-              value.second = "--";
-              //cout << key << " " << value.first << " " << value.second << endl; // BUG
+              *(value.first) = "--";
+              *(value.second) = "--";
             }
           }
           return "leave-server: saindo do servidor [" + nome + "].";
@@ -271,7 +266,7 @@ string Sistema::list_participants(int id){
     // To get the server name that the user are seeing
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
-        serverName = value.first;
+        serverName = *(value.first);
         break;
       }
     }
@@ -302,7 +297,6 @@ string Sistema::list_participants(int id){
 
 string Sistema::list_channels(int id) {
   // TODO: comments.
-  // TODO: if there is no channel send a apropriate message.
   if(usuariosLogados.contains(id)){ // See if the user is logged
     string serverName;
     bool areChannels;
@@ -310,7 +304,7 @@ string Sistema::list_channels(int id) {
     // To get the server name that the user are seeing
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
-        serverName = value.first;
+        serverName = *(value.first);
         break;
       }
     }
@@ -341,11 +335,11 @@ string Sistema::list_channels(int id) {
 string Sistema::create_channel(int id, const string nome) {
   // TODO: comments.
   string serverName;
-  CanalTexto canal(nome); // TODO: fix that constructor
+  CanalTexto canal(nome);
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
-        serverName = value.first;
+        serverName = *(value.first);
         break;
       }
     }
@@ -373,7 +367,7 @@ string Sistema::enter_channel(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
-        serverName = value.first;
+        serverName = *(value.first);
         break;
       }
     }
@@ -384,7 +378,7 @@ string Sistema::enter_channel(int id, const string nome) {
       if(serverName == server->getName() and server->existTextChannel(nome)){
         for(auto& [key, value] : usuariosLogados){
           if(key == id){
-            value.second = nome;
+            *(value.second) = nome;
           }
         }
         return "enter-channel: você está no canal: [" + nome + "] do servidor: [" + serverName + "].";
@@ -401,8 +395,8 @@ string Sistema::leave_channel(int id) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
-        channelName = value.second;
-        serverName = value.first;
+        channelName = *(value.second);
+        serverName = *(value.first);
         break;
       }
     }
@@ -413,7 +407,7 @@ string Sistema::leave_channel(int id) {
       if(serverName == server->getName() and channelName != "--"){
         for(auto& [key, value] : usuariosLogados){
           if(key == id){
-            value.second = "--";
+            *(value.second) = "--";
           }
         }
         return "leave-channel: você saiu do canal: [" + channelName + "] do servidor: [" + serverName + "].";
@@ -434,10 +428,10 @@ string Sistema::send_message(int id, const string mensagem) {
     }
   }
   if(usuariosLogados.contains(id)){ // See if the user is logged
-    for(const auto& [key, value] : usuariosLogados){
+    for(const auto &[key, value] : usuariosLogados){
       if(key == id){
-        serverName = value.first;
-        channelName = value.second;
+        serverName = *(value.first);
+        channelName = *(value.second);
         break;
       }
     }
@@ -459,6 +453,7 @@ string Sistema::send_message(int id, const string mensagem) {
         }
         return "send-message: não foi possível ter a data e hora de envio da mensagem. Verifique o seu sistema!";
       }
+      return "send-message: existe um erro no servidor ou canal.";
     }
   }
 
@@ -473,8 +468,8 @@ string Sistema::list_messages(int id) {
     // To get the server name that the user are seeing
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
-        serverName = value.first;
-        channelName = value.second;
+        serverName = *(value.first);
+        channelName = *(value.second);
         break;
       }
     }
