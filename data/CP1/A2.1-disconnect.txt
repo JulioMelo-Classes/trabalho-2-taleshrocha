@@ -1,4 +1,4 @@
-create-user julio.melo@imd.ufrn.br 12ab34cd Julio Melo
-login julio.melo@imd.ufrn.br 12ab34cd
+create-user taleshrocha@gmail.com 1senhalegal# tales
+login taleshrocha@gmail.com 1senhalegal#
 disconnect 0
 quit

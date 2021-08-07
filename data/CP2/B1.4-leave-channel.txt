@@ -1,7 +1,7 @@
-create-user taleshrochaz@gmail.com _SenhaLegal_ tales
-login taleshrochaz@gmail.com _SenhaLegal_
-create-user jonh@gmail.com _SenhaLegal_ jonh
-login jonh@gmail.com _SenhaLegal_
+create-user taleshrocha@gmail.com 1senhalegal# tales
+login taleshrocha@gmail.com 1senhalegal#
+create-user jonh@gmail.com 1senhalegal# jonh
+login jonh@gmail.com 1senhalegal#
 create-server 0 batata
 enter-server 0 batata
 create-channel 0 canalegal

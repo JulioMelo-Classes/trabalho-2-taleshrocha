@@ -1,5 +1,5 @@
-create-user email senha tales
-login email senha
+create-user taleshrocha@gmail.com 1senhalegal# tales
+login taleshrocha@gmail.com 1senhalegal#
 create-server 0 batata
 enter-server 0 batata
 create-channel 0 canalegal

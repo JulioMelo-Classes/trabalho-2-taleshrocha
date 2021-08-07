@@ -1,7 +1,7 @@
-create-user email senha tales
-login email senha
-create-user email2 senha thanos
-login email2 senha
+create-user taleshrocha@gmail.com 1senhalegal# tales
+login taleshrocha@gmail.com 1senhalegal#
+create-user jonh@gmail.com 1senhalegal# jonh
+login jonh@gmail.com 1senhalegal#
 create-server 0 ervilha
 create-server 0 batata
 create-server 0 cenoura

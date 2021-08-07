@@ -66,7 +66,7 @@ string Sistema::create_user(const string email, const string senha, const string
 
   shared_ptr<Usuario> user(new Usuario(email, senha, nome));
   if(!user->validatePassword()){
-    return "create-user: senha inválida. Ela deve ter pelo menos 8 caracters e um caractere especial (Ex.: senhamassa#)";
+    return "create-user: senha inválida. Ela deve ter pelo menos 8 caracters, um numero e um caractere especial (Ex.: 1senhalegal#)";
   }
   user->setId();
   usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists

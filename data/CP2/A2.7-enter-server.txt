@@ -1,7 +1,7 @@
-create-user julio.melo@imd.ufrn.br 12ab34cd Julio Melo
-login julio.melo@imd.ufrn.br 12ab34cd
-create-user taleshrochaz@gmail.com senha Tales Rocha
-login taleshrochaz@gmail.com senha
+create-user julio.melo@imd.ufrn.br 1senhalegal# Julio Melo
+login julio.melo@imd.ufrn.br 1senhalegal#
+create-user taleshrochaz@gmail.com 1senhalegal# Tales Rocha
+login taleshrochaz@gmail.com 1senhalegal#
 create-server 0 batata1
 create-server 0 batata2
 create-server 1 banana1
