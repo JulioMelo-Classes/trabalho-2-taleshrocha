@@ -5,10 +5,10 @@ using namespace std;
 
 int Usuario::currentId; // To keep the last id value created by the sistem.
 
-Usuario::Usuario(string email, string keyword, string name){
+Usuario::Usuario(string email, string password, string name){
   this->name = name;
   this->email = email;
-  this->keyword = keyword;
+  this->password = password;
 }
 
 void Usuario::setId(){
@@ -23,8 +23,8 @@ void Usuario::setEmail(string email){ //TODO: validation
   this->email = email;
 }
 
-void Usuario::setKeyword(string keyword){ // TODO: keyword size most be bigger than 8 char
-  this->keyword = keyword;
+void Usuario::setPassword(string password){ // TODO: password size most be bigger than 8 char
+  this->password = password;
 }
 
 int Usuario::getId(){
@@ -39,33 +39,33 @@ string Usuario::getEmail(){
   return email;
 }
 
-string Usuario::getKeyword(){
-  return keyword;
+string Usuario::getPassword(){
+  return password;
 }
 
 //bool Usuario::validateName(){
 //}
 
-bool Usuario::validateKeyword(){
-  if(this->keyword.size() < 8 or
-     (this->keyword.find("!") == string::npos and
-     this->keyword.find("@") == string::npos and
-     this->keyword.find("#") == string::npos and
-     this->keyword.find("$") == string::npos and
-     this->keyword.find("%") == string::npos and
-     this->keyword.find("¨") == string::npos and
-     this->keyword.find("&") == string::npos and
-     this->keyword.find("*") == string::npos and
-     this->keyword.find("(") == string::npos and
-     this->keyword.find(")") == string::npos and
-     this->keyword.find("-") == string::npos and
-     this->keyword.find("_") == string::npos)){
+bool Usuario::validatePassword(){
+  if(this->password.size() < 8 or
+     (this->password.find("!") == string::npos and
+     this->password.find("@") == string::npos and
+     this->password.find("#") == string::npos and
+     this->password.find("$") == string::npos and
+     this->password.find("%") == string::npos and
+     this->password.find("¨") == string::npos and
+     this->password.find("&") == string::npos and
+     this->password.find("*") == string::npos and
+     this->password.find("(") == string::npos and
+     this->password.find(")") == string::npos and
+     this->password.find("-") == string::npos and
+     this->password.find("_") == string::npos)){
     return false;
   }
 
   int count = 0;
   for(int i = 0 ; i < 10; i++) {
-    if(this->keyword.find(to_string(i)) != string::npos){
+    if(this->password.find(to_string(i)) != string::npos){
       count++;
     }
   }

@@ -7,9 +7,7 @@
 
 using namespace std;
 
-// Função de apoio que recebe um istringstream e
-// le todo texto restante até o fim da linha
-string restoDe(istringstream &ss) {
+string Executor::restoDe(istringstream &ss) {
   string resto;
   getline(ss, resto, '\0'); // ler o resto da linha
   if (resto != "" && (resto[0] == ' ' || resto[0] == '\t')) {
@@ -18,19 +16,12 @@ string restoDe(istringstream &ss) {
   return resto;
 }
 
-// Construtor. Recebe uma referência ao sistema que vai operar
-// Guarda o seu endereço para executar as operações.
 Executor::Executor(Sistema &sistema) {
   this->sair = false;
   this->sistema = &sistema;
 }
 
-// Inicia o processamento dos comentarios.
-// Esse método recebe por exemplo o "cin" e o "cout" no main
-// Dessa forma ele faz o necessário para ler 1 comando por linha e
-// o processar corretamente, colocando no stream de saída o resultado de cada um.
 void Executor::iniciar(istream &inputStream, ostream &outputStream) {
-  //cout << "\033[1;34m";
   cout << R"(
    ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ██████╗ ██████╗
   ██╔════╝██╔═══██╗████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔══██╗
@@ -53,15 +44,12 @@ void Executor::iniciar(istream &inputStream, ostream &outputStream) {
     }
 }
 
-// Método responsável por processar cada linha, capturando o nome do comando
-// e seus parâmetros em variáveis e executar o método correspondente no sistema
 string Executor::processarLinha(string linha) {
   istringstream buf(linha);
   string nomeComando;
   buf >> nomeComando;
 
   if (nomeComando.empty()) {
-    //cout << nomeComando << endl;
     return "Comando Inválido <vazio>";
   }
 
@@ -181,7 +169,6 @@ string Executor::processarLinha(string linha) {
   }
 
   else {
-    //cout << nomeComando << endl;
     return "Comando precisa ser precedido de um id [" + nomeComando + "]";
   }
 }

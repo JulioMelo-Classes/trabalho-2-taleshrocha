@@ -27,13 +27,9 @@ void Servidor::addTextChannel(std::shared_ptr<CanalTexto> canal){
 
 void Servidor::removeParticipant(int id){
   for(auto id_ = participantesIds.begin(); id_ != participantesIds.end(); id_++){
-    //cout << "removeParticipant0: " << id << " " << *id_ << endl;
-    //cout << "removeParticipant0: " << participantesIds.size() << endl;
     if(*id_ == id){
-      //cout << "removeParticipant1: " << id << " " << *id_ << endl;
       this->participantesIds.erase(id_);
       id_--; // For some reason
-      //cout << "removeParticipant2: " << id << " " << *id_ << endl;
     }
   }
 }
@@ -64,20 +60,16 @@ bool Servidor::existParticipant(int id){
 }
 
 bool Servidor::existTextChannel(string name){
-  //cout << canaisTexto.size() << endl;
   for(shared_ptr<CanalTexto> canal : canaisTexto){
-    //cout << "Nomes: " << canal_.getName() << " " << canal.getName() << endl;
     if(canal->getName() == name){
-      //cout << "true" << endl;
       return true;
     }
   }
-  //cout << "false" << endl;
   return false;
 }
 
 shared_ptr<CanalTexto> Servidor::getChannel(string name){
-  for(shared_ptr<CanalTexto> canal : canaisTexto){ //TODO: canal ou &canal?
+  for(shared_ptr<CanalTexto> canal : canaisTexto){
     if(canal->getName() == name){
       return canal;
     }
@@ -86,7 +78,7 @@ shared_ptr<CanalTexto> Servidor::getChannel(string name){
 }
 
 bool Servidor::listTextChannels(){
-  int i = 1; //<! Just to enumerate the list
+  int i = 1; // Just to enumerate the list
 
   for(shared_ptr<CanalTexto> canal  : canaisTexto){
     cout << i << ") " << canal->getName() << endl;

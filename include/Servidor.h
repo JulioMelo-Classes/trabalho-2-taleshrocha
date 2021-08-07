@@ -13,8 +13,8 @@ private:
 	std::string nome;
 	std::string descricao;
 	std::string codigoConvite;
-	std::vector<std::shared_ptr<CanalTexto>> canaisTexto; // No get set
-	std::vector<int> participantesIds; // No get set
+	std::vector<std::shared_ptr<CanalTexto>> canaisTexto;
+	std::vector<int> participantesIds;
 public:
 
 	/*! The class's constructor.
@@ -34,18 +34,13 @@ public:
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
 	void addParticipant(int id);
 
-	//TODO: edit documentation.
-	/*! Add a user's id to the participantesIds vector.
-	  @param id A integer containing a user's id to be added in the participantesIds vector. */
+	/*! Adds a text channel in the vector canaisTexto
+	  @param canal A pointer of a CanalTexto */
 	void addTextChannel(std::shared_ptr<CanalTexto> canal);
 
 	/*! Remove a participant's id of the participantesIds vector.
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
 	void removeParticipant(int id);
-
-	/*! Remove a participant's id of the participantesIds vector.
-	  @param id A integer containing a user's id to be added in the participantesIds vector. */
-	void removeTextChannel(int id);
 
 	/*! Get the server's owner id.
 	  @return A integer containing the server's owner id. */
@@ -68,13 +63,18 @@ public:
 	  @return True If the user is in the server. False otherwise. */
 	bool existParticipant(int id);
 
-	/*! See if a user is a server participant.
-	  @param id A integer containing some user's id.
-	  @return True If the user is in the server. False otherwise. */
+	/*! See if a text channel is in the server.
+	  @param name A string containing the text channel name.
+	  @return True If the text channel is in the server. False otherwise. */
 	bool existTextChannel(std::string name);
 
+	/*! Get a smart pointer to a text channel.
+	  @param name A string containing the text channel name.
+	  @return A pointer to the desired text channel. */
 	std::shared_ptr<CanalTexto> getChannel(std::string name);
 
+	/*! Prints all text channels in the server.
+	  @return True If there is text channels in the server. False otherwise. */
 	bool listTextChannels();
 };
 

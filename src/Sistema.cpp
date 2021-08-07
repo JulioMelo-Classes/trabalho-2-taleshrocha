@@ -65,7 +65,7 @@ string Sistema::create_user(const string email, const string senha, const string
   }
 
   shared_ptr<Usuario> user(new Usuario(email, senha, nome));
-  if(!user->validateKeyword()){
+  if(!user->validatePassword()){
     return "create-user: senha inválida. Ela deve ter pelo menos 8 caracters e um caractere especial (Ex.: senhamassa#)";
   }
   user->setId();
@@ -75,7 +75,7 @@ string Sistema::create_user(const string email, const string senha, const string
 
 string Sistema::login(const string email, const string senha){
   for(shared_ptr<Usuario> user : usuarios){
-    if(email == user->getEmail() and senha == user->getKeyword()){ //<! Checks if the user email and keyword exists
+    if(email == user->getEmail() and senha == user->getPassword()){ //<! Checks if the user email and password exists
       if(!usuariosLogados.contains(user->getId())){ //<! See if the user is not already logged
         shared_ptr<string> n1(new string("--"));
         shared_ptr<string> n2(new string("--"));
@@ -349,7 +349,7 @@ string Sistema::create_channel(int id, const string nome) {
     if(serverName == "--"){
       return "create-channel: não podes criar o canal ["+ canal->getName() +"]! Primeiro entre em um servidor.";
     }
-    for(shared_ptr<Servidor> server : servidores){//TODO server ou &server?
+    for(shared_ptr<Servidor> server : servidores){
       if(id != server->getId() and server->getName() == serverName){
         return "create-channel: não podes criar o canal ["+ canal->getName() +"] em um servidor que não é seu [" + serverName + "]!";
       }
@@ -444,7 +444,7 @@ string Sistema::send_message(int id, const string mensagem) {
     // Creates the current time string.
     char buffer[100];
     time_t time = std::time(nullptr);
-    for(shared_ptr<Servidor> server : servidores){//TODO: server ou &server?
+    for(shared_ptr<Servidor> server : servidores){
       if(serverName == server->getName() and server->existTextChannel(channelName)){
         if(strftime(buffer, sizeof(buffer), "<%d/%m/%y - %R>", localtime(&time))){
           string s = buffer;

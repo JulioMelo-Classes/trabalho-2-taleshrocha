@@ -10,15 +10,15 @@ private:
 	static int currentId;
 	std::string name;
 	std::string email;
-	std::string keyword;
+	std::string password;
 
 public:
 
 	/*! The class's constructor.
 	  @param email A string containing the user's email address.
-	  @param keyword A string containing the user's keyword.
+	  @param password A string containing the user's password.
 	  @param name A string containing the user's name. */
-	Usuario(std::string email, std::string keyword, std::string name);
+	Usuario(std::string email, std::string password, std::string name);
 
     /*! Creates a unique id for the user and sets it in the integer id. */
 	void setId();
@@ -31,9 +31,9 @@ public:
 	  @param email A string containing the user's email address to be changed. */
 	void setEmail(std::string email);
 
-	/*! Set the user's keyword.
-	  @param keyword A string containing the user's email address to be changed. */
-	void setKeyword(std::string keyword);
+	/*! Set the user's password.
+	  @param password A string containing the user's email address to be changed. */
+	void setPassword(std::string password);
 
 	/*! Get the user's owner id.
 	  @return A integer containing the user's owner id. */
@@ -47,16 +47,17 @@ public:
 	  @return A integer containing the user's email. */
 	std::string getEmail();
 
-	/*! Get the user's keyword.
-	  @return A integer containing the user's keyword. */
-	std::string getKeyword();
+	/*! Get the user's password.
+	  @return A integer containing the user's password. */
+	std::string getPassword();
 
-	/*! See if the user has a good keyword, name and email.
-	  @param user A Usuario.
-	  @return True if the user validation is ok. False otherwise. */
+	/*! See if the user's email is valid.
+	  @return True if the email is valid. False otherwise. */
 	bool validateEmail();
 
-	bool validateKeyword();
+	/*! See if the user's password is valid.
+	  @return True if the password is valid. False otherwise. */
+	bool validatePassword();
 };
 
 #endif
