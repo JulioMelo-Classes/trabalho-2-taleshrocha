@@ -51,6 +51,7 @@ bool Sistema::quit() {
 }
 
 string Sistema::create_user(const string email, const string senha, const string nome) {
+  ofstream file ("../data/users-info.dat", ios_base::app);
   if(nome.empty() or email.empty() or senha.empty()){
     return "create-user: faltam informações para a criar o usuário.";
   }
@@ -65,11 +66,19 @@ string Sistema::create_user(const string email, const string senha, const string
   }
 
   shared_ptr<Usuario> user(new Usuario(email, senha, nome));
+  //TODO: put to validate email
   if(!user->validatePassword()){
     return "create-user: senha inválida. Ela deve ter pelo menos 8 caracters, um numero e um caractere especial (Ex.: 1senhalegal#)";
   }
   user->setId();
-  usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists
+  if(file.is_open()){
+    file << user->getId() << "|" << user->getEmail() << "|" << user->getPassword() << "|" << user->getName() << endl;;
+    file.close();
+    usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists
+  }
+  else{
+    return "create-user: unable to open the user-info file. User not created!";
+  }
   return "create-user: usuário criado com sucesso.";
 }
 
@@ -495,4 +504,47 @@ string Sistema::list_messages(int id) {
     return "Fim das mensagens.";
   }
   return "list-messages: usuário não existe ou não conectado!";
+}
+
+string Sistema::load_users(){
+  // TODO: Remember to update currentId
+  int i = 0;
+  int id;
+  string token, email, password, name;
+  string delimiter = "|";
+  size_t pos = 0;
+  string line = "";
+  ifstream file ("../data/users-info.dat");
+
+  if(file.is_open()){
+    while(!file.eof()){
+      getline(file, line);
+      if(!line.empty()){
+        while((pos = line.find(delimiter)) != std::string::npos){
+          token = line.substr(0, pos); //Break the string into tokens.
+          if(i == 0){
+            stringstream ss(token);
+            ss >> id;
+          }
+          else if(i == 1){
+            email = token;
+          }
+          else{
+            password = token;
+          }
+          i++;
+
+          line.erase(0, pos + delimiter.length()); //Erase the token from the original string.
+        }
+        i = 0;
+        name = line;
+        //cout << email << " " << password << " " << name << " " << id << endl;
+        shared_ptr<Usuario> user(new Usuario(email, password, name));
+        user->setId(id);
+        usuarios.push_back(user);
+      }
+    }
+    file.close();
+  }
+  return "load-users: unable to open the user-info file.";
 }

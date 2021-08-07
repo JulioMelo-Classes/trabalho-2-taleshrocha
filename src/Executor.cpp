@@ -33,6 +33,8 @@ void Executor::iniciar(istream &inputStream, ostream &outputStream) {
 
 )";
 
+  sistema->load_users();
+
   string linha, saida;
   this->sair = false;
   while (! this->sair)

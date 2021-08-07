@@ -11,8 +11,14 @@ Usuario::Usuario(string email, string password, string name){
   this->password = password;
 }
 
-void Usuario::setId(){
-  this->id = currentId++;
+void Usuario::setId(int id){
+    this->id = id;
+    if(id == currentId){
+      currentId++;
+    }
+    else{
+      currentId = id;
+    }
 }
 
 void Usuario::setName(string name){ // TODO: can't have numbers
@@ -42,9 +48,6 @@ string Usuario::getEmail(){
 string Usuario::getPassword(){
   return password;
 }
-
-//bool Usuario::validateName(){
-//}
 
 bool Usuario::validatePassword(){
   if(this->password.size() < 8 or

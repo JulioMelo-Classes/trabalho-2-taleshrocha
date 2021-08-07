@@ -20,8 +20,9 @@ public:
 	  @param name A string containing the user's name. */
 	Usuario(std::string email, std::string password, std::string name);
 
+	//TODO: edit
     /*! Creates a unique id for the user and sets it in the integer id. */
-	void setId();
+	void setId(int id=currentId);
 
 	/*! Set the user's name.
 	  @param name A string containing the user's name to be changed. */

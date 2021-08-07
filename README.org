@@ -27,10 +27,12 @@ cmake --build .
 ./concordo
 #+end_src
 
-- You can also run commands directly from a text file this way:
+- You can also run tests directly from a text file this way:
 #+begin_src shell
 ./concordo < script_comandos.txt
 #+end_src
+
+- IMPORTANT: if you wish to user a test file, be sure that the files described in the topic 'Files' are all empty. Otherwise, you will have trouble running the tests files.
 
 ** How to quit
 - Use the quit command and type "Y" or "N". Like this:
@@ -39,3 +41,7 @@ quit
 You've got to ask yourself one question: "Do I feel lucky?" Well, do ya, punk? Sair? [Y]es / [N]o
 Y
 #+end_src
+
+** Files
+*** This program saves all the data in the following files:
+- data/users-info.dat: is were all the user's information is.
