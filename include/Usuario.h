@@ -2,14 +2,15 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 #include <string>
+#include <memory>
 
 class Usuario{
 private:
-	int Id;
+	int id;
 	static int currentId;
-	std::string Name;
-	std::string Email;
-	std::string Keyword;
+	std::string name;
+	std::string email;
+	std::string keyword;
 
 public:
 
@@ -49,6 +50,13 @@ public:
 	/*! Get the user's keyword.
 	  @return A integer containing the user's keyword. */
 	std::string getKeyword();
+
+	/*! See if the user has a good keyword, name and email.
+	  @param user A Usuario.
+	  @return True if the user validation is ok. False otherwise. */
+	bool validateEmail();
+
+	bool validateKeyword();
 };
 
 #endif

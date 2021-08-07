@@ -21,7 +21,7 @@ void Servidor::addParticipant(int id){
   this->participantesIds.push_back(id);
 }
 
-void Servidor::addTextChannel(CanalTexto canal){
+void Servidor::addTextChannel(std::shared_ptr<CanalTexto> canal){
   this->canaisTexto.push_back(canal);
 }
 
@@ -65,9 +65,9 @@ bool Servidor::existParticipant(int id){
 
 bool Servidor::existTextChannel(string name){
   //cout << canaisTexto.size() << endl;
-  for(CanalTexto canal : canaisTexto){
+  for(shared_ptr<CanalTexto> canal : canaisTexto){
     //cout << "Nomes: " << canal_.getName() << " " << canal.getName() << endl;
-    if(canal.getName() == name){
+    if(canal->getName() == name){
       //cout << "true" << endl;
       return true;
     }
@@ -76,11 +76,10 @@ bool Servidor::existTextChannel(string name){
   return false;
 }
 
-CanalTexto* Servidor::getChannel(string name){
-  //CanalTexto c("----");
-  for(CanalTexto &canal : canaisTexto){
-    if(canal.getName() == name){
-      return &canal;
+shared_ptr<CanalTexto> Servidor::getChannel(string name){
+  for(shared_ptr<CanalTexto> canal : canaisTexto){ //TODO: canal ou &canal?
+    if(canal->getName() == name){
+      return canal;
     }
   }
   return nullptr;
@@ -89,8 +88,8 @@ CanalTexto* Servidor::getChannel(string name){
 bool Servidor::listTextChannels(){
   int i = 1; //<! Just to enumerate the list
 
-  for(CanalTexto canal  : canaisTexto){
-    cout << i << ") " << canal.getName() << endl;
+  for(shared_ptr<CanalTexto> canal  : canaisTexto){
+    cout << i << ") " << canal->getName() << endl;
     i++;
   }
 

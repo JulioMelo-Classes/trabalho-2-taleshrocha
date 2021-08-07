@@ -3,16 +3,17 @@
 #define SERVIDOR_H
 #include <string>
 #include <vector>
+#include <memory>
 #include "CanalTexto.h"
 
-// TODO: edit canalTexto methods.
+// TODO: finish documentation.
 class Servidor{
 private:
 	int usuarioDonoId;
 	std::string nome;
 	std::string descricao;
 	std::string codigoConvite;
-	std::vector<CanalTexto> canaisTexto; // No get set
+	std::vector<std::shared_ptr<CanalTexto>> canaisTexto; // No get set
 	std::vector<int> participantesIds; // No get set
 public:
 
@@ -33,9 +34,10 @@ public:
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
 	void addParticipant(int id);
 
+	//TODO: edit documentation.
 	/*! Add a user's id to the participantesIds vector.
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
-	void addTextChannel(CanalTexto canal);
+	void addTextChannel(std::shared_ptr<CanalTexto> canal);
 
 	/*! Remove a participant's id of the participantesIds vector.
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
@@ -71,7 +73,7 @@ public:
 	  @return True If the user is in the server. False otherwise. */
 	bool existTextChannel(std::string name);
 
-	CanalTexto* getChannel(std::string name);
+	std::shared_ptr<CanalTexto> getChannel(std::string name);
 
 	bool listTextChannels();
 };

@@ -1,0 +1,5 @@
+create-user julio.melo@imd.ufrn.br 12ab34cd! Julio
+create-user taleshrochaz@gmail.com 12ab34cd! Tales
+create-user jonh1@gmail.com senhamas1sa# Jonh1
+create-user jonh2@gmail.com 12ab3! Jonh2
+create-user jonh3@gmail.com senhafraca Jonh3

@@ -50,33 +50,36 @@ bool Sistema::quit() {
   return true;
 }
 
-string Sistema::create_user (const string email, const string senha, const string nome) {
+string Sistema::create_user(const string email, const string senha, const string nome) {
   if(nome.empty() or email.empty() or senha.empty()){
-    return "create_user: faltam informações para a criar o usuário.";
+    return "create-user: faltam informações para a criar o usuário.";
   }
 
-  for(Usuario user : usuarios){ //<! Checks if the user name or email already exists
-    if(nome == user.getName()){
-      return "create_user: nome de usuário já existente.";
+  for(shared_ptr<Usuario> user : usuarios){ //<! Checks if the user name or email already exists
+    if(nome == user->getName()){
+      return "create-user: nome de usuário já existente.";
     }
-    else if(email == user.getEmail()){
-      return "create_user: email já usado.";
+    else if(email == user->getEmail()){
+      return "create-user: email já usado.";
     }
   }
 
-  Usuario user(email, senha, nome);
-  user.setId();
+  shared_ptr<Usuario> user(new Usuario(email, senha, nome));
+  if(!user->validateKeyword()){
+    return "create-user: senha inválida. Ela deve ter pelo menos 8 caracters e um caractere especial (Ex.: senhamassa#)";
+  }
+  user->setId();
   usuarios.push_back(user); //<! Adds the user in the Sistema's usuarios vector only if he doesn't exists
-  return "create_user: usuário criado com sucesso.";
+  return "create-user: usuário criado com sucesso.";
 }
 
 string Sistema::login(const string email, const string senha){
-  for(Usuario u : usuarios){
-    if(email == u.getEmail() and senha == u.getKeyword()){ //<! Checks if the user email and keyword exists
-      if(!usuariosLogados.contains(u.getId())){ //<! See if the user is not already logged
+  for(shared_ptr<Usuario> user : usuarios){
+    if(email == user->getEmail() and senha == user->getKeyword()){ //<! Checks if the user email and keyword exists
+      if(!usuariosLogados.contains(user->getId())){ //<! See if the user is not already logged
         shared_ptr<string> n1(new string("--"));
         shared_ptr<string> n2(new string("--"));
-        usuariosLogados.insert(make_pair(u.getId(), make_pair(n1, n2)));
+        usuariosLogados.insert(make_pair(user->getId(), make_pair(n1, n2)));
         return "login: logado como " + email;
       }
       else{
@@ -91,9 +94,9 @@ string Sistema::disconnect(int id) {
 
   // Just to get the user name:
   string userName;
-  for(Usuario user : usuarios){
-    if(user.getId() == id){
-      userName = user.getName();
+  for(shared_ptr<Usuario> user : usuarios){
+    if(user->getId() == id){
+      userName = user->getName();
     }
   }
 
@@ -280,9 +283,9 @@ string Sistema::list_participants(int id){
     // Now we are going to get all the user's names that are in the server
     for(shared_ptr<Servidor> server : servidores){
       if(server->getName() == serverName){
-        for(Usuario user : usuarios){
-          if(server->existParticipant(user.getId())){
-            cout << i << ") " << user.getName() << endl;
+        for(shared_ptr<Usuario> user : usuarios){
+          if(server->existParticipant(user->getId())){
+            cout << i << ") " << user->getName() << endl;
             i++;
           }
         }
@@ -335,7 +338,7 @@ string Sistema::list_channels(int id) {
 string Sistema::create_channel(int id, const string nome) {
   // TODO: comments.
   string serverName;
-  CanalTexto canal(nome);
+  shared_ptr<CanalTexto> canal(new CanalTexto(nome));
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(const auto& [key, value] : usuariosLogados){
       if(key == id){
@@ -344,18 +347,18 @@ string Sistema::create_channel(int id, const string nome) {
       }
     }
     if(serverName == "--"){
-      return "create-channel: não podes criar o canal ["+ canal.getName() +"]! Primeiro entre em um servidor.";
+      return "create-channel: não podes criar o canal ["+ canal->getName() +"]! Primeiro entre em um servidor.";
     }
-    for(shared_ptr<Servidor> &server : servidores){
+    for(shared_ptr<Servidor> server : servidores){//TODO server ou &server?
       if(id != server->getId() and server->getName() == serverName){
-        return "create-channel: não podes criar o canal ["+ canal.getName() +"] em um servidor que não é seu [" + serverName + "]!";
+        return "create-channel: não podes criar o canal ["+ canal->getName() +"] em um servidor que não é seu [" + serverName + "]!";
       }
-      if(server->getName() == serverName and server->existTextChannel(canal.getName())){
-        return "create-channel: já existe um canal com o nome [" + canal.getName() + "] no servidor [" + serverName + "]!";
+      if(server->getName() == serverName and server->existTextChannel(canal->getName())){
+        return "create-channel: já existe um canal com o nome [" + canal->getName() + "] no servidor [" + serverName + "]!";
       }
       if(server->getName() == serverName){
         server->addTextChannel(canal);
-        return "create-channel: canal [" + canal.getName() + "] criado com sucesso no servidor ["+ serverName +"].";
+        return "create-channel: canal [" + canal->getName() + "] criado com sucesso no servidor ["+ serverName +"].";
       }
     }
   }
@@ -422,9 +425,9 @@ string Sistema::send_message(int id, const string mensagem) {
   string serverName;
   string channelName;
   string userName;
-  for(Usuario user : usuarios){
-    if(user.getId() == id){
-      userName = user.getName();
+  for(shared_ptr<Usuario> user : usuarios){
+    if(user->getId() == id){
+      userName = user->getName();
     }
   }
   if(usuariosLogados.contains(id)){ // See if the user is logged
@@ -436,24 +439,24 @@ string Sistema::send_message(int id, const string mensagem) {
       }
     }
     if(channelName == "--"){
-      return "send-message: você deve estar em um canal.";
+      return "send-message: você deve estar em um canal->";
     }
     // Creates the current time string.
     char buffer[100];
     time_t time = std::time(nullptr);
-    for(shared_ptr<Servidor> &server : servidores){
+    for(shared_ptr<Servidor> server : servidores){//TODO: server ou &server?
       if(serverName == server->getName() and server->existTextChannel(channelName)){
         if(strftime(buffer, sizeof(buffer), "<%d/%m/%y - %R>", localtime(&time))){
           string s = buffer;
           shared_ptr<Mensagem> message(new Mensagem(id, userName, s, mensagem));
-          CanalTexto *canal = server->getChannel(channelName);
+          shared_ptr<CanalTexto> canal = server->getChannel(channelName);
           canal->addMessage(message);
           //cout << mensagem << endl;
           return "send-message: mensagem enviada com sucesso em " + s + ".";
         }
         return "send-message: não foi possível ter a data e hora de envio da mensagem. Verifique o seu sistema!";
       }
-      return "send-message: existe um erro no servidor ou canal.";
+      return "send-message: existe um erro no servidor ou canal->";
     }
   }
 
@@ -483,7 +486,7 @@ string Sistema::list_messages(int id) {
     // Now we are going to get all the user's names that are in the server
     for(shared_ptr<Servidor> server : servidores){
       if(server->getName() == serverName and server->existTextChannel(channelName)){
-        CanalTexto *channel = server->getChannel(channelName);
+        shared_ptr<CanalTexto> channel = server->getChannel(channelName);
         channel->listMessages();
         break; // After i get the right server, i don't need to look the others
       }

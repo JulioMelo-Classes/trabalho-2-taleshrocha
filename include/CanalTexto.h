@@ -5,31 +5,26 @@
 #include <memory>
 #include "Mensagem.h"
 
-// TODO: documentation.
-// TODO: implement methods.
 class CanalTexto{
 private:
 	std::string name;
-	std::vector<std::shared_ptr<Mensagem>> messages; // No get set
+	std::vector<std::shared_ptr<Mensagem>> messages;
 public:
 
 	/*! The class's constructor.
 	  @param name A string containing the text channel's name. */
-	CanalTexto(std::string name);
+	explicit CanalTexto(std::string name);
 
+	/*! get the class's name.
+	  @return a string containing the text channel's name. */
 	std::string getName();
-
-	void setName(std::string name);
 
 	/*! Add a user's id to the participantesIds vector.
 	  @param id A integer containing a user's id to be added in the participantesIds vector. */
 	void addMessage(std::shared_ptr<Mensagem> message);
 
+	//! List all the channel's messages with cout.
 	void listMessages();
-
-	/*! Remove a participant's id of the participantesIds vector.
-	  @param id A integer containing a user's id to be added in the participantesIds vector. */
-	void removeMensage(int id);
 };
 
 #endif

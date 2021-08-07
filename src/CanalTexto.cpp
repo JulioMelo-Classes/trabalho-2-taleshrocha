@@ -7,15 +7,8 @@ CanalTexto::CanalTexto(std::string name){
   this->name = name;
 }
 
-void CanalTexto::setName(string name){
-  this->name = name;
-}
-
 void CanalTexto::addMessage(std::shared_ptr<Mensagem> message){
   this->messages.push_back(message);
-  //for(Mensagem message : this->messages){
-  //  cout << message.getContent() << endl;
-  //}
 }
 
 string CanalTexto::getName(){

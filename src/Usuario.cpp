@@ -1,43 +1,90 @@
 #include "Usuario.h"
+#include <iostream>
 
 using namespace std;
 
-int Usuario::currentId; // Has to be here for some reason
+int Usuario::currentId; // To keep the last id value created by the sistem.
 
 Usuario::Usuario(string email, string keyword, string name){
-  Name = name;
-  Email = email;
-  Keyword = keyword;
+  this->name = name;
+  this->email = email;
+  this->keyword = keyword;
 }
 
 void Usuario::setId(){
-  Id = currentId++;
+  this->id = currentId++;
 }
 
 void Usuario::setName(string name){ // TODO: can't have numbers
-  Name = name;
+  this->name = name;
 }
 
 void Usuario::setEmail(string email){ //TODO: validation
-  Email = email;
+  this->email = email;
 }
 
 void Usuario::setKeyword(string keyword){ // TODO: keyword size most be bigger than 8 char
-  Keyword = keyword;
+  this->keyword = keyword;
 }
 
 int Usuario::getId(){
-  return Id;
+  return id;
 }
 
 string Usuario::getName(){
-  return Name;
+  return name;
 }
 
 string Usuario::getEmail(){
-  return Email;
+  return email;
 }
 
 string Usuario::getKeyword(){
-  return Keyword;
+  return keyword;
+}
+
+//bool Usuario::validateName(){
+//}
+
+bool Usuario::validateKeyword(){
+  if(this->keyword.size() < 8 or
+     (this->keyword.find("!") == string::npos and
+     this->keyword.find("@") == string::npos and
+     this->keyword.find("#") == string::npos and
+     this->keyword.find("$") == string::npos and
+     this->keyword.find("%") == string::npos and
+     this->keyword.find("¨") == string::npos and
+     this->keyword.find("&") == string::npos and
+     this->keyword.find("*") == string::npos and
+     this->keyword.find("(") == string::npos and
+     this->keyword.find(")") == string::npos and
+     this->keyword.find("-") == string::npos and
+     this->keyword.find("_") == string::npos)){
+    return false;
+  }
+
+  int count = 0;
+  for(int i = 0 ; i < 10; i++) {
+    if(this->keyword.find(to_string(i)) != string::npos){
+      count++;
+    }
+  }
+
+  if(count == 0){
+    return false;
+  }
+
+  return true;
+}
+
+bool Usuario::validateEmail(){
+  // Locate '@'
+  auto atSign = find(this->email.begin(), this->email.end(), '@');
+  // Locate '.' after '@'
+  auto dot = find(atSign, this->email.end(), '.');
+  // make sure both characters are present
+  if(atSign == this->email.end() or dot == this->email.end()){
+    return false;
+  }
+  return true;
 }

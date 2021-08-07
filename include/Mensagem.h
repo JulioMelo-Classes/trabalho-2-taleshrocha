@@ -2,16 +2,15 @@
 #define MENSAGEM_H_
 #include <string>
 
-// TODO: implement methods.
 class Mensagem{
  private:
-  std::string date;
-  int ownerId;
-  std::string ownerName;
   int name;
+  int ownerId;
+  std::string date;
+  std::string ownerName;
   std::string content;
-  bool isEdited;
   bool editedDate;
+  bool isEdited;
  public:
 
   /*! The class's constructor.
@@ -32,6 +31,8 @@ class Mensagem{
     @return A integer containing the message's owner id. */
   int getOwnerId();
 
+  /*! Get the message's owner name.
+    @return A string containing the message's owner name. */
   std::string getOwnerName();
 
   /*! Get the message's content.
