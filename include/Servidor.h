@@ -7,6 +7,11 @@
 #include "CanalTexto.h"
 
 // TODO: finish documentation.
+
+/*
+Cp2 ok
+documentação 0.8, faltou documentar os atributos
+*/
 class Servidor{
 private:
 	int usuarioDonoId;

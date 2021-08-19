@@ -9,4 +9,4 @@ add_executable(
     concordo
     ${SOURCE_FILES})
 
-set(CMAKE_CXX_FLAGS "-Wall -g -fsanitize=address -std=c++20 -lm")
+set(CMAKE_CXX_FLAGS "-Wall -g -fsanitize=address -std=c++2a -lm")

@@ -223,6 +223,9 @@ string Sistema::remove_server(int id, const string nome) {
   return "remove-server: usuário não existe ou não conectado!";
 }
 
+/*
+A2.7 ok
+*/
 string Sistema::enter_server(int id, const string nome, const string codigo) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(shared_ptr<Servidor> &server : servidores){
@@ -246,6 +249,9 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
   return "enter-server: usuário não existe ou não conectado!";
 }
 
+/*
+A2.8 ok
+*/
 string Sistema::leave_server(int id, const string nome) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     for(shared_ptr<Servidor> &server : servidores){
@@ -270,6 +276,9 @@ string Sistema::leave_server(int id, const string nome) {
   return "enter-server: usuário não existe ou não conectado!";
 }
 
+/*
+A2.9 ok
+*/
 string Sistema::list_participants(int id){
   if(usuariosLogados.contains(id)){ // See if the user is logged
     int i = 1; //<! Just to enumerate the list
@@ -307,6 +316,9 @@ string Sistema::list_participants(int id){
   return "list-participants: usuário não existe ou não conectado!";
 }
 
+/*
+B1.1 ok
+*/
 string Sistema::list_channels(int id) {
   // TODO: comments.
   if(usuariosLogados.contains(id)){ // See if the user is logged
@@ -344,6 +356,10 @@ string Sistema::list_channels(int id) {
   return "list-channels: usuário não existe ou não conectado!";
 }
 
+/*
+B1.2 ok
+- Nesse caso não tem restrição no documento sobre quem pode e quem não pode criar um canal. Como não está claro lá, não vou tirar pontos!
+*/
 string Sistema::create_channel(int id, const string nome) {
   // TODO: comments.
   string serverName;
@@ -374,6 +390,9 @@ string Sistema::create_channel(int id, const string nome) {
   return "create-channel: usuário não existente ou não conectado!";
 }
 
+/*
+B1.3 ok
+*/
 string Sistema::enter_channel(int id, const string nome) {
   string serverName;
   if(usuariosLogados.contains(id)){ // See if the user is logged
@@ -401,6 +420,9 @@ string Sistema::enter_channel(int id, const string nome) {
   return "enter-channel: usuário não existe ou não conectado!";
 }
 
+/*
+B1.4 ok
+*/
 string Sistema::leave_channel(int id) {
   string serverName;
   string channelName;
@@ -430,6 +452,9 @@ string Sistema::leave_channel(int id) {
   return "leave-channel: usuário não existe ou não conectado!";
 }
 
+/*
+B2.1 ok
+*/
 string Sistema::send_message(int id, const string mensagem) {
   string serverName;
   string channelName;
@@ -472,6 +497,9 @@ string Sistema::send_message(int id, const string mensagem) {
   return "send-message: usuário não existe ou não conectado!";
 }
 
+/*
+B2.2 ok
+*/
 string Sistema::list_messages(int id) {
   if(usuariosLogados.contains(id)){ // See if the user is logged
     string serverName;

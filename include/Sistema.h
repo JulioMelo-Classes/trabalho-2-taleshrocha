@@ -16,10 +16,15 @@
 
 //TODO: extra1 documentatio.
 // Sistema deve concentrar todas as operações do Concordo
+
+//Extra Memoria compartilhada 80%, faltou usar corretamente na tabela UsuariosLogados
+//Extra arquivos: salvou os usuários 25%
 class Sistema{
 private:
 	std::vector<std::shared_ptr<Servidor>> servidores; //<! um vetor com todos os servidores
 	std::vector<std::shared_ptr<Usuario>> usuarios; //<! um vetor com todos os usuários cadastrados
+	//Acho que a unica coisa que ficou faltando foi usar aqui corretamente!
+	//usando shared_ptr neste ponto você precisa fazer muito menos buscas nas listas!
 	std::map<int, std::pair<std::shared_ptr<std::string>, std::shared_ptr<std::string>>> usuariosLogados; //<! um vetor contendo os usuários que logaram no sistema
 
 public:

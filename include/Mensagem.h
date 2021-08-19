@@ -2,7 +2,10 @@
 #ifndef MENSAGEM_H_
 #define MENSAGEM_H_
 #include <string>
-
+/*
+Cp2 ok
+documentação 0.8, faltou documentar os atributos
+*/
 class Mensagem{
  private:
   int name;

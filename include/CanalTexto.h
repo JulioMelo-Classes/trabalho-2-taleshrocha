@@ -5,7 +5,10 @@
 #include <vector>
 #include <memory>
 #include "Mensagem.h"
-
+/*
+Cp2 ok
+documentação 0.8, faltou documentar os atributos
+*/
 class CanalTexto{
 private:
 	std::string name;

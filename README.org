@@ -1,5 +1,5 @@
 * LP1's 2nd project
-
+<!--I'll grade 100% on the 'Test' evaluation, even if you didn't provide any explanation about the tests, it's clear by the file names in the CP1 and CP2 folders-->
 #+begin_src
  ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ██████╗ ██████╗
 ██╔════╝██╔═══██╗████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔══██╗
